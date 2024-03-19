@@ -1,0 +1,7 @@
+{
+  "name": "TriFlora",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
