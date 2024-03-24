@@ -1,8 +1,9 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
+import Acceuil from './pages/acceuil/accueil';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -23,19 +24,52 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+
+import { IonLabel, IonTabBar, IonTabButton } from "@ionic/react";
+import { BsBasket2Fill, BsPersonFill } from "react-icons/bs";
+import { AiFillHome } from "react-icons/ai";
+import { MdFavorite } from "react-icons/md";
+import "../src/components/footer/footer.css"
+
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
+    <IonTabs>
+      <IonRouterOutlet onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+       
+        <Route exact path="/acceuil">
+          <Acceuil />
+          
+        </Route>
         <Route exact path="/home">
           <Home />
         </Route>
         <Route exact path="/">
-          <Redirect to="/home" />
+          <Redirect to="/acceuil" />
         </Route>
       </IonRouterOutlet>
+      <IonTabBar slot="bottom">
+      <IonTabButton tab="home" href="/home" className="btn">
+        <AiFillHome className="icons" />
+        <IonLabel className="btn">Home</IonLabel>
+      </IonTabButton>
+
+      <IonTabButton tab="basket" href="" className="btn">
+        <BsBasket2Fill className="icons" />
+        <IonLabel className="btn">Basket</IonLabel>
+      </IonTabButton>
+      <IonTabButton tab="favorite" href="" className="btn">
+        <MdFavorite className="icons" />
+        <IonLabel className="btn">Favorite</IonLabel>
+      </IonTabButton>
+      <IonTabButton tab="profile" href="" className="btn">
+        <BsPersonFill className="icons" />
+        <IonLabel className="btn">Profile</IonLabel>
+      </IonTabButton>
+    </IonTabBar>
+      </IonTabs>
     </IonReactRouter>
   </IonApp>
 );

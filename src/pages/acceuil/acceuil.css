@@ -1,0 +1,61 @@
+.homeContent{
+    width: 100%;
+    height: 100%;
+    background-image: url("../../../public/assets/images/425588341_950420323312122_1977496889142464950_n.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+}
+.headerContainer{
+    display: flex;
+    flex-direction: inline-flex;
+   padding: 10px;
+}
+.profilIcon{font-size: x-large;}
+.titleCont{
+    float: left;
+}
+.homeBTN{
+    --background: #536c23;
+    --background-hover: #497347;
+    --background-activated: #497347;
+    --background-focused: #497347;
+    
+  
+    --color: white;
+        text-size-adjust: bold;
+    --border-radius: 20px;
+    --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
+    
+}
+.homeContent  {
+    color: #536c23;
+}
+
+.homeArrow{
+    font-size: x-large;
+}
+.logo{
+    font-size: x-large;
+}
+
+.contentDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.paragDiv{
+    background-color: whitesmoke;
+    opacity: 0.9;
+    color: #633345;
+    font-size: x-large;
+    text-align: center;
+    border-radius: 15px;
+    padding: 20px 10px 20px 10px;
+}

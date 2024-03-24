@@ -1,0 +1,12 @@
+.icons{
+    color: #633345;
+    font-size: x-large;
+    align-items: center;
+}
+.icons:hover{
+    color: #7d3c54;
+}
+.btn,.btn:hover,.btn:active,.btn:focus{
+    color: #7d3c54;
+}
+
