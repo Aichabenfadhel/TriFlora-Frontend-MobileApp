@@ -30,6 +30,7 @@ import { BsBasket2Fill, BsPersonFill } from "react-icons/bs";
 import { AiFillHome } from "react-icons/ai";
 import { MdFavorite } from "react-icons/md";
 import "../src/components/footer/footer.css"
+import ProductDetails from './pages/productDetails/productDetails';
 
 setupIonicReact();
 
@@ -45,6 +46,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/home">
           <Home />
+        </Route>
+        <Route exact path="/product-details/:id">
+          <ProductDetails />
         </Route>
         <Route exact path="/">
           <Redirect to="/acceuil" />

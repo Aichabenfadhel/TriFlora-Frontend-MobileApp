@@ -36,6 +36,15 @@
     text-align: center;
 }
 
+.detailsBTN{
+    color: #633345;
+    --background: white;
+    --border-radius: 10px;
+    --border-color: #633345;
+    --border-style: solid;
+    --border-width: 1px;
+    --text:Arial, Helvetica, sans-serif ;
+}
 .icon{
     color: #633345;
     font-size: x-large;
