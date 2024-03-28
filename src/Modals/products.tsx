@@ -1,6 +1,6 @@
 
 
-type productsType={
+export type productsType={
     id:string;
     title: string;
     description:string;

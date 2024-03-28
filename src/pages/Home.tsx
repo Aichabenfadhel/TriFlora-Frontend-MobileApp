@@ -16,10 +16,12 @@ import "./Home.css";
 
 import { RiHeartAddLine } from "react-icons/ri";
 import { useHistory } from "react-router";
+import { useCart } from "../components/cart/cart";
 
 const Home: React.FC = () => {
 
   const history = useHistory();
+  const { addToCart } = useCart();
 
   function goToProductDetails(): void {
     history.push("/product-details/:id");
@@ -59,7 +61,7 @@ const Home: React.FC = () => {
               <IonButton fill="clear" className="favBTN">
                 Add To Favorites
               </IonButton>
-              <IonButton className="cardBTN">Add To Cart</IonButton>
+              <IonButton className="cardBTN" onClick={() => addToCart(p)}>Add To Cart</IonButton>
             </div>
             </div>
           </IonCard>
