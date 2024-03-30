@@ -6,7 +6,7 @@ import { PiPlantFill } from "react-icons/pi";
 
 const Header: React.FC = () => {
   return (
-    <IonHeader className="headerContainer">
+    <IonHeader className="headerContainer1">
       <IonTitle>
         {" "}
         <PiPlantFill className="logo" />

@@ -1,0 +1,111 @@
+.logo{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #506726;
+}
+
+.backArrow{
+    color: #506726;
+    font-size: x-large;
+}
+.productDetailsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+    color: #91576c;
+    margin-bottom: 10px;
+}
+
+.container{
+    display: inline-flex;
+    width: 100%;
+    padding: 10px;
+    height: 150px;
+}
+
+.imageContainer{
+    width: 40%;
+   
+}
+.image{
+    width: 100%;
+}
+
+.detailsContainer{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+.spanContainer{
+    color: #91576c;
+}
+
+.btnContainer{
+    display: inline-flex;
+   
+    align-items: center;
+    
+}
+.cardBTN{
+    --background: #536c23;
+    --background-hover: #497347;
+    --background-activated: #497347;
+    --background-focused: #497347;
+    --border-radius: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+.favBTN{
+    color: #536c23;
+}
+
+.quantityContainer{
+    display: inline-flex;
+    align-items: center;
+    color: rgb(207, 86, 86);
+}
+.quantityContainer span {
+    display: flex;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 2%;
+    border-style:  solid;
+    border-width: 1px;
+    border-color:rgb(207, 86, 86); ;
+}
+.quantBTN{
+    color: rgb(207, 86, 86);
+    font-size: medium;
+}
+
+@media (max-width: 600px){
+    .productDetailsContainer{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+    }
+    .container{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 10px;
+    }
+    .imageContainer{
+        display: flex;
+        align-items: center;
+        left: 50%;
+        height: 60px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}

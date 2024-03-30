@@ -1,0 +1,10 @@
+.detailsCont{
+    display: inline-flex;
+    align-items: center;
+}
+.trashBTN{
+    font-size: x-large;
+}
+.priceCont{
+    padding-right: 20px;
+}

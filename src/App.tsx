@@ -31,6 +31,7 @@ import { AiFillHome } from "react-icons/ai";
 import { MdFavorite } from "react-icons/md";
 import "../src/components/footer/footer.css"
 import ProductDetails from './pages/productDetails/productDetails';
+import CartPage from './pages/cartPage/cartPage';
 
 setupIonicReact();
 
@@ -46,9 +47,13 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/home">
           <Home />
+          <Route path={"/product-details/:id"} />
         </Route>
         <Route exact path="/product-details/:id">
           <ProductDetails />
+        </Route>
+        <Route exact path="/cart">
+          <CartPage />
         </Route>
         <Route exact path="/">
           <Redirect to="/acceuil" />
@@ -60,7 +65,7 @@ const App: React.FC = () => (
         <IonLabel className="btn">Home</IonLabel>
       </IonTabButton>
 
-      <IonTabButton tab="basket" href="" className="btn">
+      <IonTabButton tab="basket" href="/cart" className="btn">
         <BsBasket2Fill className="icons" />
         <IonLabel className="btn">Basket</IonLabel>
       </IonTabButton>

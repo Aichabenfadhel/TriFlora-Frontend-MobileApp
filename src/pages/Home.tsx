@@ -1,5 +1,5 @@
 import React from "react";
-import { IonContent } from "@ionic/react";
+import { IonContent, IonPage } from "@ionic/react";
 import {
   IonButton,
   IonCard,
@@ -13,22 +13,20 @@ import Header from "../components/header/header";
 import { products } from "../Modals/products";
 
 import "./Home.css";
-
-import { RiHeartAddLine } from "react-icons/ri";
 import { useHistory } from "react-router";
 import { useCart } from "../components/cart/cart";
 
 const Home: React.FC = () => {
 
   const history = useHistory();
-  const { addToCart } = useCart();
+  const { cart,addToCart } = useCart();
 
   function goToProductDetails(): void {
     history.push("/product-details/:id");
   }
 
   return (
-    <>
+    <IonPage>
       <Header></Header>
       <IonContent >
       
@@ -40,9 +38,7 @@ const Home: React.FC = () => {
               <div className="imgContainer">
                 <img className="card-img-top" alt={p.title} src={p.imageURL} />
               </div>
-              {/* <div className="iconContainer">
-                <RiHeartAddLine className="icon" />
-              </div> */}
+             
             </div>
             <div className="cardDetails">
             <IonCardHeader>
@@ -61,7 +57,8 @@ const Home: React.FC = () => {
               <IonButton fill="clear" className="favBTN">
                 Add To Favorites
               </IonButton>
-              <IonButton className="cardBTN" onClick={() => addToCart(p)}>Add To Cart</IonButton>
+              <IonButton className="cardBTN" onClick={() => {addToCart(p);
+              localStorage.setItem('cart',JSON.stringify([...cart,p]))}}>Add To Cart</IonButton>
             </div>
             </div>
           </IonCard>
@@ -73,7 +70,7 @@ const Home: React.FC = () => {
       
       </IonContent>
      
-    </>
+    </IonPage>
   );
 };
 

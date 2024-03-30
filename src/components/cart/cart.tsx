@@ -13,15 +13,15 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType>({
     cart: [],
-    addToCart: () => {} 
+    addToCart: (product: productsType) => { throw new Error('addToCart must be implemented'); } 
 });
 
 const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     
     const [cart, setCart] = useState<CartItem[]>([]);
 
-    const addToCart = (product: productsType) => {
-        const existingItem = cart.find(item => item.product.id === product.id);
+    const addToCart = async(product: productsType) => {
+        const existingItem = await cart.find(item => item.product.id === product.id);
 
         if (existingItem) {
             setCart(cart.map(item =>
@@ -29,15 +29,12 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             ));
         } else {
             setCart([...cart, { product, quantity: 1 }]);
+            
         }
+        
     };
 
-    useEffect(() => {
-        const existingCartItem = localStorage.getItem('cart');
-        if (existingCartItem) {
-            setCart(JSON.parse(existingCartItem));
-        }
-    }, []);
+  
 
     return (
         <CartContext.Provider value={{ cart, addToCart }}>
