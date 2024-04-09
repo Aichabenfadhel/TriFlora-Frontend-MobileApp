@@ -8,3 +8,16 @@
 .priceCont{
     padding-right: 20px;
 }
+
+.DeleteCartBTN{
+    float: right;
+    display: flex;
+    width: max-content;
+}
+@media (max-width: 600px){
+    .detailsCont{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

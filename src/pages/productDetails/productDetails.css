@@ -92,11 +92,17 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: 10px;
+        margin: 5px;
+        height:300px;
+    }
+    .title{
+        padding: 20px;
+        margin-bottom: 5px;
     }
     .container{
         display: flex;
         flex-direction: column;
+        align-items: center;
         width: 100%;
         padding: 10px;
     }

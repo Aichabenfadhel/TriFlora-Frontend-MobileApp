@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PiPlantFill } from "react-icons/pi";
 
 import {
+  IonAlert,
   IonButton,
   IonButtons,
   IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar,
 } from "@ionic/react";
 import { useParams } from "react-router";
-import { products } from "../../Modals/products";
+import {  productsType } from "../../Modals/products";
 import "./productDetails.css"
 import { BsArrowLeft } from "react-icons/bs";
 import { useCart } from "../../components/cart/cart";
+import axios from "axios";
 
 
 
@@ -20,12 +22,29 @@ const ProductDetails: React.FC = () => {
   const  {id}: { id: string } = useParams();
   const { cart,addToCart } = useCart();
   const [ quant,setQuant]=useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+  const [product,setProduct]=useState<productsType>()
 
-  const product = products.find((p) => p.id === id);
+
+  const getProduct=async()=>{
+    try {
+      
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API}/api/v1/products/${id}`
+        );
+        
+        
+       setProduct(data?.data)
+          
+      } catch (error) {
+        console.log(error);
+      }
+}
   
   const handleIncrementQuantity = ()=>{
       const quantity=quant+1;
       setQuant(quantity);
+      
   }
   const handleDecrementQuantity = ()=>{
       if(quant>1){
@@ -35,10 +54,15 @@ const ProductDetails: React.FC = () => {
         setQuant(1);
       }
   }
+useEffect(() => {
+     getProduct();
+  }, []);
 
   if (!product) {
     return <div>Product not found.</div>;
   }
+
+  
 
   return (
     <IonPage>
@@ -55,11 +79,12 @@ const ProductDetails: React.FC = () => {
       </IonToolbar>
     </IonHeader>
       <IonContent>
+        
       <div className="productDetailsContainer">
       <h1 className="title">{product.title}</h1>
       <div className="container">
         <div className="imageContainer">
-          <img src={product.imageURL} alt={product.title} className="image" />
+          <img src={product.imageCover} alt={product.title} className="image" />
         </div>
         <div className="detailsContainer">
           
@@ -72,11 +97,19 @@ const ProductDetails: React.FC = () => {
          <IonButton fill="clear" className="quantBTN" onClick={handleIncrementQuantity}>+</IonButton>
          </div>
          <div className="btnContainer">
-              <IonButton fill="clear" className="favBTN">
+              <IonButton id="present-alert" fill="clear" className="favBTN">
                 Add To Favorites
               </IonButton>
-              <IonButton className="cardBTN" onClick={() => {addToCart(product);
-              localStorage.setItem('cart',JSON.stringify([...cart,product]))}} >Add To Cart</IonButton>
+              <IonButton id="present-alert" className="cardBTN" onClick={() => {addToCart(product);
+              localStorage.setItem('cart',JSON.stringify([...cart,product])); setIsOpen(true)}} >Add To Cart</IonButton>
+              <IonAlert
+                    trigger="present-alert"
+                    isOpen={isOpen}
+                    header="Product Added Successfully"
+                    message="Check your shopping list and add more."
+                    buttons={['Ok']}
+                    onDidDismiss={() => setIsOpen(false)}
+              ></IonAlert>
             </div>
         </div>
       </div>
