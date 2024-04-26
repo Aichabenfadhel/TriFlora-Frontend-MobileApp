@@ -1,5 +1,6 @@
 export type categoryType={
+    _id:string;
     name:string;
-    slug:string;
+    slug?:string;
     image?:string;
 }

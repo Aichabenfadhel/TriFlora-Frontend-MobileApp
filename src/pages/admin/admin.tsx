@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import './admin.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { BsArrowLeft } from 'react-icons/bs';
+import { PiPlantFill } from 'react-icons/pi';
 
 interface Seller {
   _id?: string;
@@ -23,6 +26,7 @@ const AdminSellers: React.FC = () => {
   });
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [updatingSeller, setUpdatingSeller] = useState<Seller | null>(null);
+  
 
   useEffect(() => {
     fetchSellers();
@@ -78,8 +82,28 @@ const AdminSellers: React.FC = () => {
     }
   };
 
+  
   return (
-    <div>
+    
+        <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButton
+            slot="start"
+            href="/home"
+            fill="clear"
+            className="backArrow"
+          >
+            <BsArrowLeft className="backArrow" />
+          </IonButton>
+          <IonTitle className="logo">
+            {" "}
+            <PiPlantFill />
+            TriFlora
+          </IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
     <div className="container">
       <h2>Manage Sellers</h2>
       <div>
@@ -118,8 +142,11 @@ const AdminSellers: React.FC = () => {
               value={newSeller.password}
               onChange={(e) => setNewSeller({ ...newSeller, password: e.target.value })}
             />
-            <button className="button" onClick={handleCreateSeller}>Create Seller</button>
-            <button className="button cancel-button" onClick={() => setIsCreating(false)}>Cancel</button>
+           
+            <div className="adminBtnContainer">
+            <IonButton className="detailsBTN" onClick={handleCreateSeller}>Create Seller</IonButton>
+            <IonButton className="cancel-button" onClick={() => setIsCreating(false)}>Cancel</IonButton>
+            </div>
           </div>
         ) : (
          <br />
@@ -156,8 +183,8 @@ const AdminSellers: React.FC = () => {
               value={updatingSeller.password}
               onChange={(e) => setUpdatingSeller({ ...updatingSeller, password: e.target.value })}
             />
-            <button className="button" onClick={handleSaveUpdateSeller}>Save</button>
-            <button className="button cancel-button" onClick={() => setUpdatingSeller(null)}>Cancel</button>
+            <IonButton className="detailsBTN" onClick={handleSaveUpdateSeller}>Save</IonButton>
+            <IonButton className="cancel-button" onClick={() => setUpdatingSeller(null)}>Cancel</IonButton>
           </div>
         ) : (
           <h3>List of Sellers</h3>
@@ -167,7 +194,7 @@ const AdminSellers: React.FC = () => {
             {sellers.map((seller) => (
               <li key={seller._id} className="list-item">
                 <span>{`${seller.firstName} ${seller.lastName}`}</span>
-                <div>
+                <div className='sellerListBTN'>
                     <FontAwesomeIcon icon={faTrash} className="icon" onClick={() => seller._id && handleDeleteSeller(seller._id)}/>
                   
                     <FontAwesomeIcon icon={faPen} className="icon" onClick={() => seller._id && handleUpdateSeller(seller)}/>
@@ -177,7 +204,8 @@ const AdminSellers: React.FC = () => {
           </ul>
         </div>
       </div>
-      </div>
+      </IonContent>
+      </IonPage>
   );
 };
 

@@ -5,10 +5,11 @@ export type productsType={
     title: string;
     description:string;
     imageCover:string;
-    price:string;
+    price:number;
     category:string;
     quantity?:number ;
     color?:string;
+    photo?:File;
 }
 
 // export const products :productsType[]=[

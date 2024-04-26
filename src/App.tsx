@@ -30,19 +30,19 @@ import { BsBasket2Fill, BsPersonFill } from "react-icons/bs";
 import { AiFillHome } from "react-icons/ai";
 import { MdFavorite } from "react-icons/md";
 import "../src/components/footer/footer.css"
-<<<<<<< HEAD
+
 import ProductDetails from './pages/productDetails/productDetails';
 import CartPage from './pages/cartPage/cartPage';
-=======
-import AdminProducts from './pages/seller/seller';
->>>>>>> origin/main
+
+import AdminProducts from './pages/seller/products';
+import AdminSellers from './pages/admin/admin';
+import CategoryAdmin from './pages/category/category';
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-<<<<<<< HEAD
     <IonTabs>
       <IonRouterOutlet onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
        
@@ -59,6 +59,15 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/cart">
           <CartPage />
+        </Route>
+        <Route exact path="/admin">
+          <AdminProducts />
+        </Route>
+        <Route exact path="/category">
+          <CategoryAdmin />
+        </Route>
+        <Route exact path="/seller">
+          <AdminSellers />
         </Route>
         <Route exact path="/">
           <Redirect to="/acceuil" />
@@ -82,52 +91,16 @@ const App: React.FC = () => (
         <BsPersonFill className="icons" />
         <IonLabel className="btn">Profile</IonLabel>
       </IonTabButton>
-    </IonTabBar>
-=======
-      <IonTabs>
-        <IonRouterOutlet onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <Route exact path="/acceuil">
-            <Acceuil />
-          </Route>
-          <Route exact path="/home">
-            <Home />
-          </Route>
-          <Route exact path="/admin"> 
-            <Admin />
-          </Route>
-          <Route exact path="/seller"> 
-            <AdminProducts />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/acceuil" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home" className="btn">
-            <AiFillHome className="icons" />
-            <IonLabel className="btn">Home</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="basket" href="" className="btn">
-            <BsBasket2Fill className="icons" />
-            <IonLabel className="btn">Basket</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="favorite" href="" className="btn">
-            <MdFavorite className="icons" />
-            <IonLabel className="btn">Favorite</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="profile" href="" className="btn">
-            <BsPersonFill className="icons" />
-            <IonLabel className="btn">Profile</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="admin" href="/admin" className="btn">
+      <IonTabButton tab="admin" href="/admin" className="btn">
             Admin
           </IonTabButton>
-          <IonTabButton tab="seller" href="/seller" className="btn">
+          {/* <IonTabButton tab="seller" href="/seller" className="btn">
             Seller
+          </IonTabButton> */}
+          <IonTabButton tab="category" href="/category" className="btn">
+            Category
           </IonTabButton>
-        </IonTabBar>
->>>>>>> origin/main
+    </IonTabBar>
       </IonTabs>
     </IonReactRouter>
   </IonApp>

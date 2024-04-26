@@ -2,18 +2,22 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .list-container {
     border: 1px solid #ccc;
     border-radius: 5px;
-    overflow: hidden;
+    /* overflow: hidden; */
     margin-top: 20px;
   }
   
   .list-wrapper {
-    max-height: 300px; /* Adjust the maximum height of the list */
-    overflow-y: auto;
+    height: 60%; /* Adjust the maximum height of the list */
+    /* overflow-y: auto; */
+    width: 70%;
   }
   
   .list {
@@ -27,9 +31,15 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #ccc;
-    padding: 10px;
+    padding: 20px;
   }
   
+  .sellerListBTN{
+    display: inline-flex;
+    align-items: center;
+    
+  }
+
   .list-item:last-child {
     border-bottom: none;
   }
@@ -43,7 +53,7 @@
     margin-bottom: 10px;
   }
   
-  .button {
+  /* .button {
     background-color: null;
     color: #fff;
     border: none;
@@ -59,10 +69,32 @@
   
   .cancel-button {
     background-color: #633345;
+  } */
+  .adminBtnContainer{
+    display: flex;
+    align-items: center;
+    
   }
-  
+  .adminSellerButton{
+    --background: #536c23;
+    --background-hover: #497347;
+    --background-activated: #497347;
+    --background-focused: #497347;
+    --border-radius: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding-left: 20px;
+  }
+  .cancel-button {
+    --background: #633345;
+    --border-radius: 10px;
+    padding-left: 20px;
+  }
   .icon {
     margin-right: 5px;
+    padding-left: 20px;
   }
   
   @media (max-width: 768px) {

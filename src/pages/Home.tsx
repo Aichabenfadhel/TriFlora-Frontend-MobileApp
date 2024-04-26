@@ -35,7 +35,7 @@ const Home: React.FC = () => {
         `${process.env.REACT_APP_API}/api/v1/products/`
       );
       setLoading(false)
-      console.log(data.data);
+      
       setProducts(data.data);
     } catch (error) {
       setLoading(false)
@@ -45,20 +45,22 @@ const Home: React.FC = () => {
   };
 
 
-  const addItemToCart = async (p:productsType,productId:string,quantity:any,price:string) => {
+  const addItemToCart = async (p:productsType,productId:string,quantity:any,price:number,title:string,imageCover:string) => {
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/cart/`,{
             productId,
             quantity,
-            price
+            price,
+            title,
+            imageCover
         }
       );
       
       
       if (data?.success) {
         console.log("item added successfully");
-        addToCart(p);
+        addToCart(p._id,p.price,p.title,p.imageCover);
         // localStorage.setItem('cart',JSON.stringify([...cart,p])) ;
          setIsOpen(true);
       } else {
@@ -87,7 +89,9 @@ const Home: React.FC = () => {
           <IonCard className="card" key={p._id}>
             <div className="enteteContainer">
               <div className="imgContainer">
-                <img className="card-img-top" alt={p.title} src={p.imageCover} />
+                <img className="card-img-top" alt={p.title} 
+                src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${p._id}`} 
+                />
               </div>
              
             </div>
@@ -113,7 +117,7 @@ const Home: React.FC = () => {
               <IonButton fill="clear" className="favBTN">
                 Add To Favorites
               </IonButton>
-              <IonButton id="present-alert" className="cardBTN" onClick={() => addItemToCart(p,p._id,p.quantity,p.price)}>Add To Cart</IonButton>
+              <IonButton id="present-alert" className="cardBTN" onClick={() => addItemToCart(p,p._id,p.quantity,p.price,p.title,p.imageCover)}>Add To Cart</IonButton>
                <IonAlert
                     trigger="present-alert"
                     isOpen={isOpen}

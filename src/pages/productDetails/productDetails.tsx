@@ -84,12 +84,13 @@ useEffect(() => {
       <h1 className="title">{product.title}</h1>
       <div className="container">
         <div className="imageContainer">
-          <img src={product.imageCover} alt={product.title} className="image" />
+          <img 
+          src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${product._id}`}  alt={product.title} className="image" />
         </div>
         <div className="detailsContainer">
           
           <p><span className="spanContainer">Description :</span> {product.description}</p>
-         <p><span className="spanContainer">Price :</span> {product.price}</p>
+         <p><span className="spanContainer">Price :</span> {product.price} DT</p>
          <div className="quantityContainer">
          <h6>Quantity: </h6>
          <IonButton fill="clear" className="quantBTN" onClick={handleDecrementQuantity}>-</IonButton>
@@ -100,7 +101,7 @@ useEffect(() => {
               <IonButton id="present-alert" fill="clear" className="favBTN">
                 Add To Favorites
               </IonButton>
-              <IonButton id="present-alert" className="cardBTN" onClick={() => {addToCart(product);
+              <IonButton id="present-alert" className="cardBTN" onClick={() => {addToCart(product._id,product.price,product.title,product.imageCover);
               localStorage.setItem('cart',JSON.stringify([...cart,product])); setIsOpen(true)}} >Add To Cart</IonButton>
               <IonAlert
                     trigger="present-alert"

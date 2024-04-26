@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
-import './seller.css';
+import './products.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { IonButton, IonContent, IonHeader, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { BsArrowLeft } from 'react-icons/bs';
+import { PiPlantFill } from 'react-icons/pi';
+import { CategoryInterfaceType } from '../category/category';
 
 interface Product {
   _id?: string;
@@ -10,18 +14,23 @@ interface Product {
   description: string;
   price: number;
   category: string;
+  photo:File|null;
 }
 
 const AdminProducts: React.FC = () => {
+  const [categories, setCategories] = useState<CategoryInterfaceType[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [photo, setPhoto] = useState<File | null>(null);
   const [newProduct, setNewProduct] = useState<Product>({
     title: '',
     description: '',
     price: 0,
     category: '',
+    photo:  null,
   });
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [updatingProduct, setUpdatingProduct] = useState<Product | null>(null);
+   
 
   useEffect(() => {
     fetchProducts();
@@ -36,36 +45,80 @@ const AdminProducts: React.FC = () => {
     }
   };
 
-  const handleCreateProduct = async () => {
+  // const handleCreateProduct = async () => {
     
+  //   try {
+  //     if (!newProduct.title || !newProduct.description || isNaN(newProduct.price ) ||!newProduct.category)
+  //      {        console.error('All fields are required.');
+  //       return;
+  //     }
+  
+  //     await axios.post('http://localhost:8000/api/v1/products', {
+  //       title: newProduct.title,
+  //       description: newProduct.description,
+  //       price: newProduct.price,
+  //       category: newProduct.category,
+
+  //     });
+
+  //     setNewProduct({
+  //       title: '',
+  //       description: '',
+  //       price: 0,
+  //       category: ''
+  //     });
+  //     fetchProducts();
+  //     setIsCreating(false);
+  //   } catch (error) {
+  //     console.error('Error creating product:', error);
+  //   }
+  // };
+  
+  const handleCreateProduct = async () => {
     try {
-      if (!newProduct.title || !newProduct.description || isNaN(newProduct.price ) ||!newProduct.category)
-       {        console.error('All fields are required.');
+      // Check if all required fields are filled
+      if (!newProduct.title || !newProduct.description || isNaN(newProduct.price) || !newProduct.category || !photo) {
+        console.error('All fields are required.');
         return;
       }
   
-      await axios.post('http://localhost:8000/api/v1/products', {
-        title: newProduct.title,
-        description: newProduct.description,
-        price: newProduct.price,
-        category: newProduct.category,
-
+      // Create FormData object to append the file
+      const formData = new FormData();
+      formData.append('title', newProduct.title);
+      formData.append('description', newProduct.description);
+      formData.append('price', String(newProduct.price)); // Convert price to string
+      formData.append('category', newProduct.category);
+      formData.append('photo', photo);
+  
+      // Make POST request to create new product
+      const rep=await axios.post('http://localhost:8000/api/v1/products', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
-
+  
+      console.log("product adding",rep);
+      
+      // Clear input fields after successful creation
       setNewProduct({
         title: '',
         description: '',
         price: 0,
-        category: ''
+        category: '',
+        photo:null
       });
+  
+      // Fetch updated list of products
       fetchProducts();
+      
+      // Exit create mode
       setIsCreating(false);
     } catch (error) {
       console.error('Error creating product:', error);
     }
   };
   
-
+  
   const handleDeleteProduct = async (id: string) => {
     try {
       await axios.delete(`http://localhost:8000/api/v1/products/${id}`);
@@ -91,7 +144,52 @@ const AdminProducts: React.FC = () => {
     }
   };
 
+  const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.length) {
+      setPhoto(e.target.files[0]);
+    }
+  };
+
+  const getAllCategories = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/categories/`
+      );
+      
+      
+      if (data?.success) {
+        setCategories(data?.data);
+        
+      }
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  };
+  useEffect(() => {
+    getAllCategories();
+  }, []);
   return (
+    <IonPage>
+    <IonHeader>
+      <IonToolbar>
+        <IonButton
+          slot="start"
+          href="/home"
+          fill="clear"
+          className="backArrow"
+        >
+          <BsArrowLeft className="backArrow" />
+        </IonButton>
+        <IonTitle className="logo">
+          {" "}
+          <PiPlantFill />
+          TriFlora
+        </IonTitle>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent>
     <div className="container">
       <h2>Manage Products</h2>
       <div>
@@ -109,13 +207,19 @@ const AdminProducts: React.FC = () => {
               value={newProduct.title}
               onChange={(e) => setNewProduct({ ...newProduct, title: e.target.value })}
             />
-             <input
-              className="input-field"
-              type="text"
-              placeholder="Category"
+            <IonSelect
               value={newProduct.category}
-              onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-            />
+              placeholder="Select a category"
+              className="form-select mb-3"
+              onIonChange={(e) => setNewProduct({ ...newProduct, category: e.detail.value })}
+>
+              {categories?.map((c) => (
+               <IonSelectOption key={c._id} value={c._id}>
+               {c.name}
+                </IonSelectOption>
+               ))}
+            </IonSelect>
+
             <textarea
               className="input-field"
               placeholder="Description"
@@ -129,8 +233,33 @@ const AdminProducts: React.FC = () => {
               value={newProduct.price}
               onChange={(e) => setNewProduct({ ...newProduct, price: parseInt(e.target.value) })}
             />
-            <button className="button" onClick={handleCreateProduct}>Create Product</button>
-            <button className="button cancel-button" onClick={() => setIsCreating(false)}>Cancel</button>
+              <div className="mb-3">
+                <label className="btn btn-outline-secondary col-md-12">
+                  {photo ? photo.name : "Upload Photo"}
+                  <input
+                    type="file"
+                    name="photo"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    hidden
+                  />
+                </label>
+              </div>
+
+              <div className="mb-3">
+                {photo && (
+                  <div className="text-center">
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt="product_photo"
+                      height={"200px"}
+                      className="img img-responsive"
+                    />
+                  </div>
+                )}
+              </div>
+            <IonButton className="detailsBTN" onClick={handleCreateProduct}>Create Product</IonButton>
+            <IonButton className="cancel-button" onClick={() => setIsCreating(false)}>Cancel</IonButton>
           </div>
         ) : (   
          <br />
@@ -166,12 +295,12 @@ const AdminProducts: React.FC = () => {
               value={updatingProduct.price}
               onChange={(e) => setUpdatingProduct({ ...updatingProduct, price: parseInt(e.target.value) })}
             />
-            <button className="button" onClick={handleSaveUpdateProduct}>
+            <IonButton className="detailsBTN" onClick={handleSaveUpdateProduct}>
               save
-            </button>
-            <button className="button cancel-button" onClick={() => setUpdatingProduct(null)}>
+            </IonButton>
+            <IonButton className="cancel-button" onClick={() => setUpdatingProduct(null)}>
               cancel
-            </button>
+            </IonButton>
           </div>
         ) : (
           <h3>List of Products</h3>
@@ -190,6 +319,8 @@ const AdminProducts: React.FC = () => {
           </ul>
         </div>
     </div>
+    </IonContent>
+      </IonPage>
   );
 };
 

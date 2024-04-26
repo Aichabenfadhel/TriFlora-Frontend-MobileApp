@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCart } from "../../components/cart/cart";
 import {
+  IonAlert,
   IonButton,
   IonContent,
   IonHeader,
@@ -28,35 +29,39 @@ import { productsType } from "../../Modals/products";
 const CartPage: React.FC = () => {
   const {
     cart,
+    totalCartPrice,
     addToCart,
     getCartData,
     removeFromCart,
     incrementQuantity,
     decrementQuantity,
+    deleteCartItems
   } = useCart();
   const [total, setTotal] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const totalPayment = (): number => {
-    if (!cart || cart.length === 0) {
-      return 0;
-    }
+  // const totalPayment = (): number => {
+  //   if (!cart || cart.length === 0) {
+  //     return 0;
+  //   }
 
-    let ptotal = 0;
-    cart.forEach((item) => {
-      const price = parseFloat(item.product.price);
-      if (!isNaN(price)) {
-        ptotal = ptotal + price * item.quantity;
-      }
-    });
-    return ptotal;
-    setTotal(ptotal);
-  };
+  //   let ptotal = 0;
+  //   cart.forEach((item) => {
+  //     const price = item.price;
+  //     if (!isNaN(price)) {
+  //       ptotal = ptotal + price * item.quantity;
+  //     }
+  //   });
+    
+  //   setTotal(ptotal);
+  //   return ptotal;
+  // };
 
 
 useEffect(()=>{
   getCartData();
-},[])
+},[cart])
 
   return (
     <IonPage>
@@ -91,13 +96,13 @@ useEffect(()=>{
                   <IonItem key={index}>
                     <IonThumbnail slot="start">
                       <img
-                        alt={item.product?.title || ""}
-                        src={item.product?.imageCover || ""}
+                        alt={item.title || ""}
+                        src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${item.product}`}
                       />
                     </IonThumbnail>
-                    <IonLabel>{item.product?.title || ""}</IonLabel>
+                    <IonLabel>{item?.title}</IonLabel>
                     <div className="detailsCont">
-                      <p className="priceCont">Price: {item.product?.price}</p>
+                      <p className="priceCont">Price: {item?.price}</p>
                       <div className="quantityContainer">
                         <p>Quantity: </p>
                         <IonButton
@@ -132,9 +137,36 @@ useEffect(()=>{
               </IonList>
             )}
             
-            <h2>Total Payement : {totalPayment()} DT</h2>
-          <IonButton color="danger" className="DeleteCartBTN">Delete All Items</IonButton>
-          
+            <h2>Total Payement : {totalCartPrice} DT</h2>
+             
+          <IonButton color="danger" 
+                    className="DeleteCartBTN" 
+                    onClick={()=>setIsOpen(true)}
+                    >
+                      Delete All Items
+                </IonButton>
+                <IonAlert
+    isOpen={isOpen}
+    onDidDismiss={() => setIsOpen(false)}
+    header={'Delete All Items'}
+    message={'Are you sure you want to delete all items from your cart?'}
+    buttons={[
+        {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+                console.log('Cancelled');
+            }
+        },
+        {
+            text: 'Delete',
+            handler: () => {
+                
+                deleteCartItems();
+            }
+        }
+    ]}
+/>
           </IonCardContent>
         </IonCard>
       </IonContent>
