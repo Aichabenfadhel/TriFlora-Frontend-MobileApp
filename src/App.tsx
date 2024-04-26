@@ -1,20 +1,29 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route , useLocation } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Acceuil from './pages/acceuil/accueil';
+import Login from './pages/login/login';
+import Signin from './pages/login/signin';
+import ResetPwd from './pages/login/resetPwd';
+
 import Admin from './pages/admin/sellers/sellers'; 
 
-/* Core CSS required for Ionic components to work properly */
+import Login from './pages/login/login';
+import Signin from './pages/login/signin';
+import ResetPwd from './pages/login/resetPwd';
+
+
+
 import '@ionic/react/css/core.css';
 
-/* Basic CSS for apps built with Ionic */
+
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 
-/* Optional CSS utils that can be commented out */
+
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/float-elements.css';
 import '@ionic/react/css/text-alignment.css';
@@ -22,7 +31,7 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/* Theme variables */
+
 import './theme/variables.css';
 
 import { IonLabel, IonTabBar, IonTabButton } from "@ionic/react";
@@ -30,6 +39,7 @@ import { BsBasket2Fill, BsPersonFill } from "react-icons/bs";
 import { AiFillHome } from "react-icons/ai";
 import { MdFavorite } from "react-icons/md";
 import "../src/components/footer/footer.css"
+
 
 import ProductDetails from './pages/productDetails/productDetails';
 import CartPage from './pages/cartPage/cartPage';
@@ -51,6 +61,15 @@ const App: React.FC = () => (
           <Acceuil />
           
         </Route>
+        <Route exact path="/login">
+                 <Login />
+              </Route>
+              <Route exact path="/signin">
+                 <Signin />
+              </Route>
+              <Route exact path="/resetPwd">
+                 <ResetPwd />
+              </Route>
         <Route exact path="/home">
           <Home />
           
@@ -107,8 +126,10 @@ const App: React.FC = () => (
           </IonTabButton>
     </IonTabBar>
       </IonTabs>
+
     </IonReactRouter>
   </IonApp>
-);
+  );
+
 
 export default App;
