@@ -4,7 +4,7 @@ import { IonApp, IonRouterOutlet, IonTabs, setupIonicReact } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Acceuil from './pages/acceuil/accueil';
-import Admin from './pages/admin/admin'; 
+import Admin from './pages/admin/sellers/sellers'; 
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,9 +34,10 @@ import "../src/components/footer/footer.css"
 import ProductDetails from './pages/productDetails/productDetails';
 import CartPage from './pages/cartPage/cartPage';
 
-import AdminProducts from './pages/seller/products';
-import AdminSellers from './pages/admin/admin';
+import AdminProducts from './pages/admin/products/products';
+import AdminSellers from './pages/admin/sellers/sellers';
 import CategoryAdmin from './pages/category/category';
+import AdminProfile from './pages/admin/profile-admin/adminProfile';
 
 setupIonicReact();
 
@@ -52,6 +53,10 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/home">
           <Home />
+          
+        </Route>
+        <Route exact path="/profile">
+          < AdminProfile/>
           
         </Route>
         <Route exact path="/product-details/:id">
@@ -87,7 +92,7 @@ const App: React.FC = () => (
         <MdFavorite className="icons" />
         <IonLabel className="btn">Favorite</IonLabel>
       </IonTabButton>
-      <IonTabButton tab="profile" href="" className="btn">
+      <IonTabButton tab="profile" href="/profile" className="btn">
         <BsPersonFill className="icons" />
         <IonLabel className="btn">Profile</IonLabel>
       </IonTabButton>

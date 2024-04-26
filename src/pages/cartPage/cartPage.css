@@ -1,23 +1,88 @@
-.detailsCont{
+.detailsCont {
     display: inline-flex;
     align-items: center;
-}
-.trashBTN{
+  }
+  
+  .trashBTN {
     font-size: x-large;
-}
-.priceCont{
+  }
+  
+  .priceCont {
     padding-right: 20px;
-}
-
-.DeleteCartBTN{
+  }
+  
+  .DeleteCartBTN {
     float: right;
     display: flex;
     width: max-content;
-}
-@media (max-width: 600px){
-    .detailsCont{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    margin-left: auto; 
+    margin-right: 0;
+  }
+  
+  .cartHeaderCard {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cartHeaderCard IonCardTitle {
+    width: 50%;
+  }
+  
+  .button-50 {
+    appearance: button;
+    background-color: #738e40;
+    background-image: none;
+    border: 1px solid #536c23;
+    border-radius: 4px;
+    box-shadow: #fff 4px 4px 0 0, #536c23 4px 4px 0 1px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: ITCAvantGardeStd-Bk, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    overflow: visible;
+    padding: 12px 40px;
+    text-align: center;
+    text-transform: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    margin-left: 40%;
+    margin-top: 6%;
+  }
+  
+  .button-50:focus {
+    text-decoration: none;
+  }
+  
+  .button-50:hover {
+    text-decoration: none;
+  }
+  
+  .button-50:active {
+    box-shadow: rgba(0, 0, 0, 0.125) 0 3px 5px inset;
+    outline: 0;
+  }
+  
+  .button-50:not([disabled]):active {
+    box-shadow: #fff 2px 2px 0 0, #536c23 2px 2px 0 1px;
+    transform: translate(2px, 2px);
+  }
+  
+  @media (max-width: 600px) {
+    .detailsCont {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-}
+  
+    .DeleteCartBTN {
+      margin-left: 0;
+    }
+  }
+  

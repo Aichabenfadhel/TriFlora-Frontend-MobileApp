@@ -93,9 +93,15 @@ useEffect(() => {
          <p><span className="spanContainer">Price :</span> {product.price} DT</p>
          <div className="quantityContainer">
          <h6>Quantity: </h6>
-         <IonButton fill="clear" className="quantBTN" onClick={handleDecrementQuantity}>-</IonButton>
-         <span>{quant}</span>
-         <IonButton fill="clear" className="quantBTN" onClick={handleIncrementQuantity}>+</IonButton>
+         <div className="btn-group">
+      <button className="increment-btn" onClick={handleIncrementQuantity}>
+        <span className="material-symbols-outlined">+</span>
+      </button>
+      <p>{quant}</p>
+      <button className="decrement-btn" onClick={handleDecrementQuantity}>
+        <span className="material-symbols-outlined">-</span>
+      </button>
+    </div>
          </div>
          <div className="btnContainer">
               <IonButton id="present-alert" fill="clear" className="favBTN">

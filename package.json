@@ -31,6 +31,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-rounded-image": "^2.0.15",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.1",
@@ -75,5 +76,13 @@
     "Safari >=14",
     "iOS >=14"
   ],
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "include": [
+    "src/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.jpg",
+    "src/**/*.png",
+    "src/**/*.svg",
+    "src/assets/images/*.png"
+  ]
 }

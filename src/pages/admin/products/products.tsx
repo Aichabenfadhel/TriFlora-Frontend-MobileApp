@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useRef,useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import './products.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +6,8 @@ import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { IonButton, IonContent, IonHeader, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { PiPlantFill } from 'react-icons/pi';
-import { CategoryInterfaceType } from '../category/category';
+import { FaTrashCan } from "react-icons/fa6";
+import { CategoryInterfaceType } from '../../category/category';
 
 interface Product {
   _id?: string;
@@ -30,7 +31,9 @@ const AdminProducts: React.FC = () => {
   });
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [updatingProduct, setUpdatingProduct] = useState<Product | null>(null);
-   
+  const inputRef = useRef<HTMLInputElement>(null);
+
+ 
 
   useEffect(() => {
     fetchProducts();
@@ -150,6 +153,19 @@ const AdminProducts: React.FC = () => {
     }
   };
 
+  const onChooseFile = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
+
+  const removeFile = () => {
+    setPhoto(null);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
+
   const getAllCategories = async () => {
     try {
       const { data } = await axios.get(
@@ -235,16 +251,22 @@ const AdminProducts: React.FC = () => {
             />
               <div className="mb-3">
                 <label className="btn btn-outline-secondary col-md-12">
-                  {photo ? photo.name : "Upload Photo"}
+                  
                   <input
                     type="file"
+                    ref={inputRef}
+                    className='importPhotoInput'
                     name="photo"
                     accept="image/*"
                     onChange={handlePhotoChange}
+                    style={{ display: "none" }}
                     hidden
                   />
                 </label>
               </div>
+              <button className="file-btn" onClick={onChooseFile} style={{ display: photo ? 'none' : 'flex' }}>
+  <span className="material-symbols-rounded">upload</span> Upload Picture
+</button>
 
               <div className="mb-3">
                 {photo && (
@@ -255,7 +277,17 @@ const AdminProducts: React.FC = () => {
                       height={"200px"}
                       className="img img-responsive"
                     />
+                    <div className="selected-file">
+          <p>{photo.name}</p>
+
+          <button onClick={removeFile}>
+            <span className="material-symbols-rounded">
+            <FaTrashCan />
+            </span>
+          </button>
+        </div>
                   </div>
+                  
                 )}
               </div>
             <IonButton className="detailsBTN" onClick={handleCreateProduct}>Create Product</IonButton>

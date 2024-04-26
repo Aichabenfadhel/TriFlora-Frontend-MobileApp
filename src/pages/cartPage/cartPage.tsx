@@ -84,8 +84,39 @@ useEffect(()=>{
       </IonHeader>
       <IonContent>
         <IonCard>
-          <IonCardHeader>
+          <IonCardHeader >
+            <div className="cartHeaderCard">
+
             <IonCardTitle>Shopping Cart</IonCardTitle>
+            <IonButton color="danger" 
+                    className="DeleteCartBTN" 
+                    onClick={()=>setIsOpen(true)}
+                    >
+                      Delete All Items
+                </IonButton>
+                <IonAlert
+    isOpen={isOpen}
+    onDidDismiss={() => setIsOpen(false)}
+    header={'Delete All Items'}
+    message={'Are you sure you want to delete all items from your cart?'}
+    buttons={[
+        {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+                console.log('Cancelled');
+            }
+        },
+        {
+            text: 'Delete',
+            handler: () => {
+                
+                deleteCartItems();
+            }
+        }
+    ]}
+/>
+</div>
           </IonCardHeader>
           <IonCardContent>
             {cart.length === 0 ? (
@@ -139,36 +170,10 @@ useEffect(()=>{
             
             <h2>Total Payement : {totalCartPrice} DT</h2>
              
-          <IonButton color="danger" 
-                    className="DeleteCartBTN" 
-                    onClick={()=>setIsOpen(true)}
-                    >
-                      Delete All Items
-                </IonButton>
-                <IonAlert
-    isOpen={isOpen}
-    onDidDismiss={() => setIsOpen(false)}
-    header={'Delete All Items'}
-    message={'Are you sure you want to delete all items from your cart?'}
-    buttons={[
-        {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-                console.log('Cancelled');
-            }
-        },
-        {
-            text: 'Delete',
-            handler: () => {
-                
-                deleteCartItems();
-            }
-        }
-    ]}
-/>
+
           </IonCardContent>
         </IonCard>
+          <button className="button-50" role="button">Pay Now</button>
       </IonContent>
     </IonPage>
   );

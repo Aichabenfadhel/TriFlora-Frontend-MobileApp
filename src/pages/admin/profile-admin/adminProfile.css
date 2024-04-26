@@ -1,0 +1,106 @@
+
+.globalProfileCont{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin:5%;
+}
+
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+  }
+  
+  
+  .profileHeader {
+    display: flex;
+    align-items: center;
+    width: 90%;
+  }
+  
+  
+  .profileImgCont {
+    margin: 10%;
+    height: 30%; 
+    width: 40%;
+  }
+  
+  
+  .profileImgCont img {
+    width: 100%; 
+    max-width: 250px; 
+    height: auto; 
+    border-radius: 50%;
+    margin-right: 30%; 
+  }
+  .settingsCont{
+    float: right;
+    margin-left: 10%;
+    size:xx-large;
+    color: #633345;
+  }
+
+  .profileDetailsCont h4 span{
+        color:#76394f;
+        
+  }
+  .logOutItemDiv{
+    width: 100%;
+  }
+
+  .logOutItem{
+    float: right;
+  }
+  /* .EditProfileBTN{
+    --background: #633345;
+    --background-hover: #633345;
+    --background-activated: #633345;
+    --background-focused: #633345;
+    --border-radius: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin-top: 5%;
+  } */
+
+
+
+.EditProfileBTN {
+  background-color: #fbf2f6;
+  border: 2px solid #633345;
+  border-radius: 30px;
+  box-shadow: #633345 4px 4px 0 0;
+  color: #633345;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-top: 5%;
+}
+
+.EditProfileBTN:hover {
+  background-color: #f1dee5;
+}
+
+.EditProfileBTN:active {
+  box-shadow: #633345 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+  .EditProfileBTN {
+    min-width: 120px;
+    padding: 0 25px;
+  }
+}
