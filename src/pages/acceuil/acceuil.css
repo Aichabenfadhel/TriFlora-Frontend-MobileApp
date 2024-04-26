@@ -12,7 +12,11 @@
     flex-direction: inline-flex;
    padding: 10px;
 }
-.profilIcon{font-size: x-large;}
+.profilIcon{
+    font-size: x-large;
+    --background: #536c23;
+    
+}
 .titleCont{
     float: left;
 }

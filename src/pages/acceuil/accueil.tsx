@@ -12,7 +12,9 @@ const Acceuil: React.FC = () => {
     
       <div className='headerContainer'>
         <IonTitle className='titleCont'> <PiPlantFill className='logo' />TriFlora</IonTitle>
-        <BsPersonFill  className='profilIcon'/>
+        <IonButton className='profilIcon' href='/login'>
+        <BsPersonFill  />
+        </IonButton>
         
         </div>
       <div className='contentDiv'>
@@ -25,7 +27,9 @@ const Acceuil: React.FC = () => {
           <BsArrowRight className='homeArrow'/>
         </IonButton>
         
+        
       </div>
+      
     </div>
     
   
