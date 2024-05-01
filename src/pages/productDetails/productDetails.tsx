@@ -11,7 +11,7 @@ import { useParams } from "react-router";
 import {  productsType } from "../../Modals/products";
 import "./productDetails.css"
 import { BsArrowLeft } from "react-icons/bs";
-import { useCart } from "../../components/cart/cart";
+import { useCart } from "../../provider/cart";
 import axios from "axios";
 
 

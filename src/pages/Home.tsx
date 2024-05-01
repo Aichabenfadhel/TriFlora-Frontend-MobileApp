@@ -14,18 +14,22 @@ import { productsType } from "../Modals/products";
 
 import "./Home.css";
 import { useHistory } from "react-router";
-import { useCart } from "../components/cart/cart";
+import { useCart } from "../provider/cart";
 import { Link } from "react-router-dom";
+import { AuthContextType, useAuth } from "../provider/auth";
+import { useFavorites } from "../provider/favorite";
 
 
 const Home: React.FC = () => {
 
   const history = useHistory();
-  const { cart,addToCart } = useCart();
+  const { cart,addToCart,getCartData } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [loading,setLoading]=useState(false)
   const [products, setProducts] = useState<productsType[]>([]);
- 
+  const auth: AuthContextType = useAuth();
+  const {favorites,addToFavorites}=useFavorites();
+
   
 
   const getAllProducts = async () => {
@@ -45,10 +49,13 @@ const Home: React.FC = () => {
   };
 
 
+  
+
+
   const addItemToCart = async (p:productsType,productId:string,quantity:any,price:number,title:string,imageCover:string) => {
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/cart/`,{
+        `${process.env.REACT_APP_API}/api/v1/cart/${auth?.user?._id}`,{
             productId,
             quantity,
             price,
@@ -77,6 +84,11 @@ const Home: React.FC = () => {
       getAllProducts();
     
   }, []);
+  useEffect(() => {
+    
+    getCartData()
+  
+}, [cart]);
 
   return (
     <IonPage>
@@ -114,7 +126,7 @@ const Home: React.FC = () => {
               
             </IonCardContent>
             <div className="btnContainer">
-              <IonButton fill="clear" className="favBTN">
+              <IonButton fill="clear" className="favBTN" onClick={()=>addToFavorites}>
                 Add To Favorites
               </IonButton>
               <IonButton id="present-alert" className="cardBTN" onClick={() => addItemToCart(p,p._id,p.quantity,p.price,p.title,p.imageCover)}>Add To Cart</IonButton>

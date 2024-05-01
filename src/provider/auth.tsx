@@ -1,9 +1,10 @@
 import React,{ useState, useEffect, useContext, createContext, ReactNode, Dispatch, SetStateAction, Children } from "react";
 import axios from "axios";
 import PropTypes from 'prop-types';
+import { userType } from "../Modals/userModal";
 
-interface AuthContextType {
-    user: string | null;
+export interface AuthContextType {
+    user: userType | null;
     token: string | null;
     setAuth: Dispatch<SetStateAction<AuthContextType>>;
 }
@@ -14,7 +15,7 @@ const AuthProviderPropType={
 const AuthContext = createContext<AuthContextType>({
     user: null,
     token: null,
-    setAuth: () => null, // Cette fonction est une simple initialisation, elle sera remplacée par la vraie fonction lors de l'utilisation du contexte.
+    setAuth: () => null, 
 });
 
 const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -30,12 +31,12 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             const parseData = JSON.parse(data);
             setAuth({
                 ...parseData,
-                setAuth: setAuth, // Cette ligne est importante pour mettre à jour la fonction setAuth dans le contexte.
+                setAuth: setAuth, 
             });
         }
     }, []);
 
-    // Configurer l'en-tête d'Authorization lorsque le token change
+    
     useEffect(() => {
         axios.defaults.headers.common['Authorization'] = auth?.token;
     }, [auth.token]);

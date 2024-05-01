@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route , useLocation } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonTabs, setupIonicReact } from '@ionic/react';
+import { IonApp, IonContent, IonPopover, IonRouterOutlet, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Acceuil from './pages/acceuil/accueil';
@@ -10,9 +10,7 @@ import ResetPwd from './pages/login/resetPwd';
 
 import Admin from './pages/admin/sellers/sellers'; 
 
-import Login from './pages/login/login';
-import Signin from './pages/login/signin';
-import ResetPwd from './pages/login/resetPwd';
+
 
 
 
@@ -40,7 +38,7 @@ import { AiFillHome } from "react-icons/ai";
 import { MdFavorite } from "react-icons/md";
 import "../src/components/footer/footer.css"
 
-
+import "./app.css"
 import ProductDetails from './pages/productDetails/productDetails';
 import CartPage from './pages/cartPage/cartPage';
 
@@ -48,6 +46,7 @@ import AdminProducts from './pages/admin/products/products';
 import AdminSellers from './pages/admin/sellers/sellers';
 import CategoryAdmin from './pages/category/category';
 import AdminProfile from './pages/admin/profile-admin/adminProfile';
+import FavouritePage from './pages/wishList/favorites';
 
 setupIonicReact();
 
@@ -57,43 +56,46 @@ const App: React.FC = () => (
     <IonTabs>
       <IonRouterOutlet onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
        
-        <Route exact path="/acceuil">
+        <Route  path="/acceuil" exact={true}>
           <Acceuil />
           
         </Route>
-        <Route exact path="/login">
+        <Route path="/login" exact={true}>
                  <Login />
               </Route>
-              <Route exact path="/signin">
+              <Route  path="/signin" exact={true}>
                  <Signin />
               </Route>
-              <Route exact path="/resetPwd">
+              <Route  path="/resetPwd" exact={true}>
                  <ResetPwd />
               </Route>
-        <Route exact path="/home">
+        <Route path="/home" exact={true}>
           <Home />
           
         </Route>
-        <Route exact path="/profile">
+        <Route path="/profile" exact={true}>
           < AdminProfile/>
-          
+            
         </Route>
-        <Route exact path="/product-details/:id">
+        <Route  path="/product-details/:id" exact={true}>
           <ProductDetails />
         </Route>
-        <Route exact path="/cart">
+        <Route path="/cart" exact={true}>
           <CartPage />
         </Route>
-        <Route exact path="/admin">
+        <Route component={FavouritePage} path="/favorites" exact={true}>
+         
+        </Route>
+        <Route  path="/admin" exact={true}>
           <AdminProducts />
         </Route>
-        <Route exact path="/category">
+        <Route  path="/category" exact={true}>
           <CategoryAdmin />
         </Route>
-        <Route exact path="/seller">
+        <Route  path="/seller" exact={true}>
           <AdminSellers />
         </Route>
-        <Route exact path="/">
+        <Route  path="/" exact={true}>
           <Redirect to="/acceuil" />
         </Route>
       </IonRouterOutlet>
@@ -107,13 +109,16 @@ const App: React.FC = () => (
         <BsBasket2Fill className="icons" />
         <IonLabel className="btn">Basket</IonLabel>
       </IonTabButton>
-      <IonTabButton tab="favorite" href="" className="btn">
+      <IonTabButton tab="favorite" href="/favorites" className="btn">
         <MdFavorite className="icons" />
         <IonLabel className="btn">Favorite</IonLabel>
       </IonTabButton>
       <IonTabButton tab="profile" href="/profile" className="btn">
         <BsPersonFill className="icons" />
         <IonLabel className="btn">Profile</IonLabel>
+        <IonPopover trigger="top-center" side="top" alignment="center" triggerAction="click">
+        <IonContent class="ion-padding">Hello World!</IonContent>
+      </IonPopover>
       </IonTabButton>
       <IonTabButton tab="admin" href="/admin" className="btn">
             Admin

@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {  useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../provider/auth';
+import { CartItem, useCart } from '../../provider/cart';
 
 
 
@@ -13,9 +14,12 @@ const Login: React.FC = () =>{
     const [email,setEmail]= useState("");
     const [password,setPassword]= useState("");
     const auth= useAuth();
+    
 
     const history = useHistory();
     const location = useLocation();
+    
+
 
     const handleLogin =async (event: React.FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
@@ -28,17 +32,21 @@ const Login: React.FC = () =>{
                      password,
               });
 
-              console.log("result",res);
               
+              
+             
       if (res && res.data.success) {
        auth.setAuth({
         ...auth,
         user : res.data.user,
         token : res.data.token,
        })
-
-        localStorage.setItem("auth", JSON.stringify(res.data));
-        history.push('/');
+       
+        localStorage.setItem("auth", JSON.stringify(res.data.user));
+        localStorage.setItem("cart", JSON.stringify(res.data.cart));
+        
+        
+        history.push('/home');
       } 
     } catch (error) {
       console.log(error);

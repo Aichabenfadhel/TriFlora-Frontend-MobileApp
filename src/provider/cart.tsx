@@ -1,8 +1,9 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import { productsType} from "../../Modals/products";
+import { productsType} from "../Modals/products";
 import axios from 'axios';
+import { AuthContextType, useAuth } from "./auth";
 
-interface CartItem {
+export interface CartItem {
     price:number;
     product: string;
     quantity: number;
@@ -14,6 +15,7 @@ interface CartItem {
 interface CartContextType {
     cart: CartItem[];
     totalCartPrice: number;
+    
     addToCart: (product: string,price:number,title:string,imageCover:string) => void;
     removeFromCart: (product: string) => void;
     incrementQuantity: (product: string) => void;
@@ -25,6 +27,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType>({
     cart: [],
     totalCartPrice: 0,
+   
     addToCart: (product: string , price:number,title:string,imageCover:string) => { throw new Error('addToCart must be implemented'); } ,
     removeFromCart: (product: string) => { throw new Error('removeFromCart must be implemented'); },
     incrementQuantity: (product: string) => { throw new Error('incrementQuantity must be implemented'); },
@@ -38,7 +41,8 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   
   const [cart, setCart] = useState<CartItem[]>([]);
   const [totalCartPrice, setTotalCartPrice] = useState<number>(0);
-  
+  const auth: AuthContextType = useAuth();
+  const [user,setUser]=useState(auth?.user?._id)
 
   const updateTotalCartPrice = () => {
     let totalPrice = 0;
@@ -48,10 +52,14 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setTotalCartPrice(totalPrice);
 };
 
-// useEffect to update total cart price whenever cart changes
 useEffect(() => {
+
     updateTotalCartPrice();
 }, [cart]);
+useEffect(()=>{
+  const userId = auth?.user?._id
+  setUser(userId)
+},[auth?.user])
 
     const addToCart = async(product: string,price:number,title:string,imageCover:string) => {
         const existingItem = await cart.find(item => item.product === product);
@@ -72,7 +80,7 @@ useEffect(() => {
         try {
          
           
-          const response = await axios.delete(`${process.env.REACT_APP_API}/api/v1/cart/${product}`)
+          const response = await axios.delete(`${process.env.REACT_APP_API}/api/v1/cart/${auth?.user?._id}/${product}`)
           
           const updatedCart = cart.filter(item => item.product !== product);
           
@@ -94,7 +102,7 @@ useEffect(() => {
           }
           return item;
         });
-        const response = await axios.put(`${process.env.REACT_APP_API}/api/v1/cart/${product}`, { quantity: newQuantity });
+        const response = await axios.put(`${process.env.REACT_APP_API}/api/v1/cart/${auth?.user?._id}/${product}`, { quantity: newQuantity });
         setCart(updatedCart);
       } catch (error) {
         console.error('Error updating item quantity:', error);
@@ -120,7 +128,7 @@ useEffect(() => {
             return item;
           }).filter(Boolean); 
           setCart(updatedCart)
-          const response = await axios.put(`${process.env.REACT_APP_API}/api/v1/cart/${product}`, { quantity: newQuantity});
+          const response = await axios.put(`${process.env.REACT_APP_API}/api/v1/cart/${auth?.user?._id}/${product}`, { quantity: newQuantity});
         } catch (error) {
           console.error('Error updating item quantity:', error);
         }
@@ -130,8 +138,14 @@ useEffect(() => {
 
       const getCartData = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API}/api/v1/cart/`);
+          console.log("userid",auth?.user?._id);
+          const userId = auth?.user?._id;
+    if (userId) {
+            const response = await axios.get(`${process.env.REACT_APP_API}/api/v1/cart/${auth?.user?._id}`);
+            console.log("response getcartdata",response);
+            
             const cartData = response?.data.data;
+    console.log("cart for each user ",cartData);
     
             
             const populatedCartItems = await Promise.all(cartData.cartItems.map(async (item:any) => {
@@ -144,7 +158,9 @@ useEffect(() => {
     
             setCart(populatedCartItems);
             setTotalCartPrice(cartData.totalCartPrice)
-            
+          } else {
+            console.error('User ID is undefined');
+          }
             
         } catch (error) {
             console.error('Error fetching cart data:', error);
@@ -154,7 +170,7 @@ useEffect(() => {
     const deleteCartItems=async()=>{
       try {
        
-          const response = await axios.delete(`${process.env.REACT_APP_API}/api/v1/cart/`);
+          const response = await axios.delete(`${process.env.REACT_APP_API}/api/v1/cart/${auth?.user?._id}`);
           setCart([]);
           setTotalCartPrice(0);
         
@@ -163,6 +179,7 @@ useEffect(() => {
       }
     }
  
+   
 
 
     return (

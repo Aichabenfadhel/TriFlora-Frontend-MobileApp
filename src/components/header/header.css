@@ -4,3 +4,18 @@
     text-align: center;
     color: #506726;
 }
+.menuListContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 40%;
+}
+.listItem{
+    display: inline-flex;
+    align-items: center;
+}
+.Iconcontainer{
+    display: flex;
+    align-items: center;
+    margin-right: 5%;
+}

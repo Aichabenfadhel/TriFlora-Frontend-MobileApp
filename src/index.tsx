@@ -4,17 +4,20 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import CartProvider from './components/cart/cart';
+import CartProvider from './provider/cart';
+import { AuthProvider } from './provider/auth';
 
 const container = document.getElementById('root');
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const root = createRoot(container!);
 root.render(
+  <AuthProvider>
   <CartProvider>
   <BrowserRouter>
     <App />
   </BrowserRouter>
   </CartProvider>
+  </AuthProvider>
 );
 
 // If you want your app to work offline and load faster, you can change

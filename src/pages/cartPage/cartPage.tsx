@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useCart } from "../../components/cart/cart";
+import { useCart } from "../../provider/cart";
 import {
   IonAlert,
   IonButton,
@@ -25,6 +25,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import { PiPlantFill } from "react-icons/pi";
 import { FcFullTrash } from "react-icons/fc";
 import { productsType } from "../../Modals/products";
+import { AuthContextType, useAuth } from "../../provider/auth";
 
 const CartPage: React.FC = () => {
   const {
@@ -40,7 +41,8 @@ const CartPage: React.FC = () => {
   const [total, setTotal] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-
+  const auth: AuthContextType = useAuth();
+  const [user,setUser]=useState(auth?.user?._id)
   // const totalPayment = (): number => {
   //   if (!cart || cart.length === 0) {
   //     return 0;
@@ -62,7 +64,10 @@ const CartPage: React.FC = () => {
 useEffect(()=>{
   getCartData();
 },[cart])
-
+useEffect(()=>{
+  const userId = auth?.user?._id
+  setUser(userId)
+},[auth?.user])
   return (
     <IonPage>
       <IonHeader>
