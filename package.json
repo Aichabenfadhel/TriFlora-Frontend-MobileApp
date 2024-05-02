@@ -10,6 +10,8 @@
     "@capacitor/ios": "5.7.3",
     "@capacitor/keyboard": "5.0.8",
     "@capacitor/status-bar": "5.0.7",
+    "@capacitor/storage": "^1.2.5",
+    "@capacitor/toast": "^6.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",

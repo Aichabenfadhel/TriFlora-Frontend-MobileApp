@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useCart } from "../../provider/cart";
-import { AuthContextType, useAuth } from "../../provider/auth";
+
 import {
   IonAlert,
   IonButton,
@@ -14,44 +13,24 @@ import {
   IonLabel,
   IonList,
   IonPage,
+  IonThumbnail,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { BsArrowLeft } from "react-icons/bs";
 import { PiPlantFill } from "react-icons/pi";
 import { FcFullTrash } from "react-icons/fc";
-import { productsType } from "../../Modals/products";
-import "../cartPage/cartPage.css";
 import { useHistory } from "react-router";
+import { useFavorites } from "../../provider/favorite";
+import "./favorites.css"
 
 const FavouritePage: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const auth = useAuth();
-  const [user, setUser] = useState(auth?.user?._id);
-  const [favList, setFavList] = useState<productsType[]>([]);
+  
+  const {favorites,removeFromFavorites,removeAllFavorites} = useFavorites()
   const history = useHistory();
   
 
-  useEffect(() => {
-    
-    const storedFavorites = localStorage.getItem("favorites");
-    if (storedFavorites) {
-      setFavList(JSON.parse(storedFavorites));
-    }
-  }, []);
-
-  const removeFromFavorites = (productId: string) => {
-   
-    const updatedFavorites = favList.filter((item) => item._id !== productId);
-    setFavList(updatedFavorites);
-    
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-  };
-
-  useEffect(() => {
-    const userId = auth?.user?._id;
-    setUser(userId);
-  }, [auth?.user]);
 
   return (
     <IonPage>
@@ -68,16 +47,16 @@ const FavouritePage: React.FC = () => {
       <IonContent>
         <IonCard>
           <IonCardHeader>
-            <div className="cartHeaderCard">
+            <div className="favListHeaderCard">
               <IonCardTitle>Favorites List</IonCardTitle>
-              <IonButton color="danger" className="DeleteCartBTN" onClick={() => setIsOpen(true)}>
+              <IonButton color="danger" className="DeletefavListBTN" onClick={() => setIsOpen(true)}>
                 Delete All Items
               </IonButton>
               <IonAlert
                 isOpen={isOpen}
                 onDidDismiss={() => setIsOpen(false)}
                 header={"Delete All Items"}
-                message={"Are you sure you want to delete all items from your favorite List?"}
+                message={"Are you sure you want to delete all items from your wish-List?"}
                 buttons={[
                   {
                     text: "Cancel",
@@ -89,7 +68,7 @@ const FavouritePage: React.FC = () => {
                   {
                     text: "Delete",
                     handler: () => {
-                      // Handle delete
+                      removeAllFavorites();
                     },
                   },
                 ]}
@@ -97,19 +76,24 @@ const FavouritePage: React.FC = () => {
             </div>
           </IonCardHeader>
           <IonCardContent>
-            {favList.length === 0 ? (
+            {favorites.length === 0 ? (
               <p>Your wishList is empty.</p>
             ) : (
               <IonList>
-                {favList.map((item, index) => (
+                {favorites.map((item, index) => (
                   <IonItem key={index}>
-                    <img slot="start" src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${item._id}`} />
-                    <IonLabel>{item?.title}</IonLabel>
-                    <div className="detailsCont">
-                      <p className="priceCont">Price: {item?.price}</p>
+                     <IonThumbnail slot="start">
+                      <img
+                        alt={item.title || ""}
+                        src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${item._id}`}
+                      />
+                    </IonThumbnail>
+                    <IonLabel>{item.title}</IonLabel>
+                    <div className="favListdetailsCont">
+                      <p className="favListpriceCont">Price: {item.price}</p>
                     </div>
-                    <IonButton className="trashBTN" fill="clear" 
-                    onClick={() => (item && removeFromFavorites (item._id))}
+                    <IonButton className="favListTrashBTN" fill="clear" 
+                    onClick={() => (item && removeFromFavorites (item))}
                     >
                       <FcFullTrash />
                     </IonButton>

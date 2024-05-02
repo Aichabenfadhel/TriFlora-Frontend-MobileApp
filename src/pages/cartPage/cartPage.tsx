@@ -26,7 +26,7 @@ import { PiPlantFill } from "react-icons/pi";
 import { FcFullTrash } from "react-icons/fc";
 import { productsType } from "../../Modals/products";
 import { AuthContextType, useAuth } from "../../provider/auth";
-
+import { useHistory } from "react-router";
 const CartPage: React.FC = () => {
   const {
     cart,
@@ -59,7 +59,7 @@ const CartPage: React.FC = () => {
   //   setTotal(ptotal);
   //   return ptotal;
   // };
-
+  const history = useHistory();
 
 useEffect(()=>{
   getCartData();
@@ -74,7 +74,7 @@ useEffect(()=>{
         <IonToolbar>
           <IonButton
             slot="start"
-            href="/home"
+            onClick={()=>history.push("/home")}
             fill="clear"
             className="backArrow"
           >

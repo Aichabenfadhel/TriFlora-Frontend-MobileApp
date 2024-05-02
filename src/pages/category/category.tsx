@@ -3,10 +3,10 @@ import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { PiPlantFill } from 'react-icons/pi';
-
+import { useHistory } from "react-router";
 export interface CategoryInterfaceType {
   _id?: string;
   name: string;
@@ -19,7 +19,7 @@ const CategoryAdmin: React.FC = () => {
   });
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [updatingCategory, setUpdatingCategory] = useState<CategoryInterfaceType| null>(null);
-  
+  const history = useHistory();
 
   useEffect(() => {
     fetchCatrgories();
@@ -80,7 +80,7 @@ const CategoryAdmin: React.FC = () => {
         <IonToolbar>
           <IonButton
             slot="start"
-            href="/home"
+            onClick={()=>history.push("/home")}
             fill="clear"
             className="backArrow"
           >
@@ -136,23 +136,30 @@ const CategoryAdmin: React.FC = () => {
             <IonButton className="cancel-button" onClick={() => setUpdatingCategory(null)}>Cancel</IonButton>
           </div>
         ) : (
-          <h3>List of Categories</h3>
+
+        <IonList>
+        <h3>List of Products</h3>
+              {categories.map((item, index) => (
+                <IonItem key={index}>
+                   
+                  <IonLabel>{item.name}</IonLabel>
+                 
+                  <IonButton className="favListTrashBTN" fill="clear" 
+                  onClick={() => item._id && handleDeleteCategory(item._id)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} className="icon" onClick={() => item._id && handleDeleteCategory(item._id)}/>
+                  </IonButton>
+                  <IonButton className="favListTrashBTN" fill="clear" 
+                  onClick={() => item._id && handleUpdateCateggory(item)}
+                  >
+                    <FontAwesomeIcon icon={faPen} className="icon" onClick={() => item._id && handleUpdateCateggory(item)}/>
+                  </IonButton>
+                </IonItem>
+              ))}
+            </IonList>
         )}
-        <div className="list-wrapper">
-          <ul className="list">
-            {categories.map((categ) => (
-              <li key={categ._id} className="list-item">
-                <span>{`${categ.name} `}</span>
-                <div className='sellerListBTN'>
-                    <FontAwesomeIcon icon={faTrash} className="icon" onClick={() => categ._id && handleDeleteCategory(categ._id)}/>
-                  
-                    <FontAwesomeIcon icon={faPen} className="icon" onClick={() => categ._id && handleUpdateCateggory(categ)}/>
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
-      </div>
+       
       </IonContent>
       </IonPage>
   );

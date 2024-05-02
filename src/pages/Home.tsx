@@ -15,7 +15,7 @@ import { productsType } from "../Modals/products";
 import "./Home.css";
 import { useHistory } from "react-router";
 import { useCart } from "../provider/cart";
-import { Link } from "react-router-dom";
+
 import { AuthContextType, useAuth } from "../provider/auth";
 import { useFavorites } from "../provider/favorite";
 
@@ -25,12 +25,13 @@ const Home: React.FC = () => {
   const history = useHistory();
   const { cart,addToCart,getCartData } = useCart();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenFav, setIsOpenFav] = useState(false);
   const [loading,setLoading]=useState(false)
   const [products, setProducts] = useState<productsType[]>([]);
   const auth: AuthContextType = useAuth();
-  const {favorites,addToFavorites}=useFavorites();
+  const {addToFavorites}=useFavorites();
 
-  
+
 
   const getAllProducts = async () => {
     try {
@@ -48,6 +49,16 @@ const Home: React.FC = () => {
     }
   };
 
+
+  const addItemToFavoritesList = async(product:productsType)=>{
+    try {
+      await addToFavorites(product)
+      setIsOpenFav(true)
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
 
   
 
@@ -88,7 +99,7 @@ const Home: React.FC = () => {
     
     getCartData()
   
-}, [cart]);
+}, []);
 
   return (
     <IonPage>
@@ -126,9 +137,17 @@ const Home: React.FC = () => {
               
             </IonCardContent>
             <div className="btnContainer">
-              <IonButton fill="clear" className="favBTN" onClick={()=>addToFavorites}>
+              <IonButton id="FavAlert" fill="clear" className="favBTN" onClick={()=>addItemToFavoritesList(p)}>
                 Add To Favorites
               </IonButton>
+              <IonAlert
+                    trigger="FavAlert"
+                    isOpen={isOpenFav}
+                    header="Product Added Successfully"
+                    message="Check your wish-list and add more."
+                    buttons={['Ok']}
+                    onDidDismiss={() => setIsOpenFav(false)}
+                ></IonAlert>
               <IonButton id="present-alert" className="cardBTN" onClick={() => addItemToCart(p,p._id,p.quantity,p.price,p.title,p.imageCover)}>Add To Cart</IonButton>
                <IonAlert
                     trigger="present-alert"

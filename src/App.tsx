@@ -46,7 +46,7 @@ import AdminProducts from './pages/admin/products/products';
 import AdminSellers from './pages/admin/sellers/sellers';
 import CategoryAdmin from './pages/category/category';
 import AdminProfile from './pages/admin/profile-admin/adminProfile';
-import FavouritePage from './pages/wishList/favorites';
+import FavouritePage from './pages/wishList/favoritesPage';
 
 setupIonicReact();
 
@@ -86,21 +86,23 @@ const App: React.FC = () => (
         <Route component={FavouritePage} path="/favorites" exact={true}>
          
         </Route>
-        <Route  path="/admin" exact={true}>
-          <AdminProducts />
-        </Route>
+       
         <Route  path="/category" exact={true}>
           <CategoryAdmin />
         </Route>
         <Route  path="/seller" exact={true}>
-          <AdminSellers />
+          <AdminSellers/>
         </Route>
+        <Route  path="/dashboard" exact={true}>
+          <AdminProducts/>
+        </Route>
+        
         <Route  path="/" exact={true}>
           <Redirect to="/acceuil" />
         </Route>
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
-      <IonTabButton tab="home" href="/home" className="btn">
+      <IonTabButton tab="home" href="/home" className="btn" >
         <AiFillHome className="icons" />
         <IonLabel className="btn">Home</IonLabel>
       </IonTabButton>
@@ -116,19 +118,16 @@ const App: React.FC = () => (
       <IonTabButton tab="profile" href="/profile" className="btn">
         <BsPersonFill className="icons" />
         <IonLabel className="btn">Profile</IonLabel>
-        <IonPopover trigger="top-center" side="top" alignment="center" triggerAction="click">
-        <IonContent class="ion-padding">Hello World!</IonContent>
-      </IonPopover>
       </IonTabButton>
-      <IonTabButton tab="admin" href="/admin" className="btn">
+      {/* <IonTabButton tab="admin" href="/admin" className="btn">
             Admin
-          </IonTabButton>
+          </IonTabButton> */}
           {/* <IonTabButton tab="seller" href="/seller" className="btn">
             Seller
           </IonTabButton> */}
-          <IonTabButton tab="category" href="/category" className="btn">
+          {/* <IonTabButton tab="category" href="/category" className="btn">
             Category
-          </IonTabButton>
+          </IonTabButton> */}
     </IonTabBar>
       </IonTabs>
 

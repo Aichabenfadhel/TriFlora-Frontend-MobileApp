@@ -7,14 +7,13 @@ import {
   IonButtons,
   IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar,
 } from "@ionic/react";
-import { useParams } from "react-router";
+import {  useParams } from "react-router";
 import {  productsType } from "../../Modals/products";
 import "./productDetails.css"
 import { BsArrowLeft } from "react-icons/bs";
 import { useCart } from "../../provider/cart";
 import axios from "axios";
-
-
+import { useHistory } from "react-router";
 
 
 const ProductDetails: React.FC = () => {
@@ -24,7 +23,7 @@ const ProductDetails: React.FC = () => {
   const [ quant,setQuant]=useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [product,setProduct]=useState<productsType>()
-
+  const history = useHistory();
 
   const getProduct=async()=>{
     try {
@@ -68,7 +67,7 @@ useEffect(() => {
     <IonPage>
           <IonHeader>
       <IonToolbar>
-        <IonButton slot="start" href="/home" fill="clear" className="backArrow">
+        <IonButton slot="start" onClick={()=>history.push("/home")} fill="clear" className="backArrow">
         <BsArrowLeft className="backArrow" />
         </IonButton>
         <IonTitle className="logo">

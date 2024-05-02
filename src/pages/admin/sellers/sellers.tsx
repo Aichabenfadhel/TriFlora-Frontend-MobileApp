@@ -3,10 +3,10 @@ import axios from 'axios';
 import './sellers.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { PiPlantFill } from 'react-icons/pi';
-
+import { useHistory } from "react-router";
 interface Seller {
   _id?: string;
   firstName: string;
@@ -26,7 +26,7 @@ const AdminSellers: React.FC = () => {
   });
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [updatingSeller, setUpdatingSeller] = useState<Seller | null>(null);
-  
+  const history = useHistory();
 
   useEffect(() => {
     fetchSellers();
@@ -90,7 +90,7 @@ const AdminSellers: React.FC = () => {
         <IonToolbar>
           <IonButton
             slot="start"
-            href="/home"
+            onClick={()=>history.push("/home")}
             fill="clear"
             className="backArrow"
           >
@@ -187,22 +187,32 @@ const AdminSellers: React.FC = () => {
             <IonButton className="cancel-button" onClick={() => setUpdatingSeller(null)}>Cancel</IonButton>
           </div>
         ) : (
-          <h3>List of Sellers</h3>
+
+        <IonList>
+        <h3>List of Sellers</h3>
+              {sellers.map((item, index) => (
+                <IonItem key={index}>
+                   
+                  <IonLabel>{item.firstName}</IonLabel>
+                  <IonLabel>{item.lastName}</IonLabel>
+                 
+                  <IonButton className="favListTrashBTN" fill="clear" 
+                  onClick={() => item._id && handleDeleteSeller(item._id)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} className="icon" onClick={() => item._id && handleDeleteSeller(item._id)}/>
+                  </IonButton>
+                  <IonButton className="favListTrashBTN" fill="clear" 
+                  onClick={() => item._id && handleUpdateSeller(item)}
+                  >
+                    <FontAwesomeIcon icon={faPen} className="icon" onClick={() => item._id && handleUpdateSeller(item)}/>
+                  </IonButton>
+                </IonItem>
+              ))}
+            </IonList>
+
+
         )}
-        <div className="list-wrapper">
-          <ul className="list">
-            {sellers.map((seller) => (
-              <li key={seller._id} className="list-item">
-                <span>{`${seller.firstName} ${seller.lastName}`}</span>
-                <div className='sellerListBTN'>
-                    <FontAwesomeIcon icon={faTrash} className="icon" onClick={() => seller._id && handleDeleteSeller(seller._id)}/>
-                  
-                    <FontAwesomeIcon icon={faPen} className="icon" onClick={() => seller._id && handleUpdateSeller(seller)}/>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+       
       </div>
       </IonContent>
       </IonPage>

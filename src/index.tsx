@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import CartProvider from './provider/cart';
 import { AuthProvider } from './provider/auth';
+import { FavoritesProvider } from './provider/favorite';
 
 const container = document.getElementById('root');
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -13,9 +14,11 @@ const root = createRoot(container!);
 root.render(
   <AuthProvider>
   <CartProvider>
+  <FavoritesProvider>
   <BrowserRouter>
     <App />
   </BrowserRouter>
+  </FavoritesProvider>
   </CartProvider>
   </AuthProvider>
 );

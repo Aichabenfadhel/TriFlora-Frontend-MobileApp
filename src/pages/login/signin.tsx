@@ -1,4 +1,4 @@
-import { IonButton, IonInput, IonItem, IonNote, IonTitle } from "@ionic/react";
+import { IonAlert, IonButton, IonInput, IonItem, IonNote, IonRadio, IonRadioGroup, IonTitle } from "@ionic/react";
 import React ,{ useState } from "react";
 import { PiPlantFill } from "react-icons/pi";
 import { Link } from "react-router-dom";
@@ -11,6 +11,8 @@ const Signin: React.FC =() =>{
     const [name,setName]= useState('');
     const [email,setEmail]= useState('');
     const [password,setPwd]= useState('');
+    const [role, setRole] = useState('user');
+    const [isOpen, setIsOpen] = useState(false);
     const history = useHistory();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -18,10 +20,14 @@ const Signin: React.FC =() =>{
         try {
           const res = await axios.post(
             `${process.env.REACT_APP_API}/api/v1/auth/signup`,
-            { name, email, password }
+            { name, email, password,role }
           );
           if (res && res.data.success) {
             console.log("les valeurs :",res);
+            setName('')
+            setEmail('')
+            setPwd('')
+            setRole('user')
             history.push("/login");
           } 
         } catch (error) {
@@ -62,8 +68,27 @@ const Signin: React.FC =() =>{
                  <IonInput type='password' placeholder='Confirm your password' value={password} onIonChange={e => setPwd(e.detail.value!)}></IonInput>
                  <IonNote slot='error' >Password needs to be 6 characters</IonNote>
              </IonItem>
+             <IonTitle className='label'> Sign up as :</IonTitle>
+             <IonRadioGroup value={role} onIonChange={e => setRole(e.detail.value)}>
+                 <IonRadio value="user" aria-label="Custom checkbox that is checked">Customer</IonRadio>
+                <IonRadio value="seller" aria-label="Custom checkbox">Seller</IonRadio>
+             </IonRadioGroup>
              <Link className='formLink' to="/login">login</Link><br/>
-             <IonButton  className='formButtom' type='submit' expand='block' >SignUp</IonButton>
+             <IonButton id="signupAlert"  className='formButtom' type='submit' expand='block' >SignUp</IonButton>
+             <IonAlert
+                    trigger="signupAlert"
+                    isOpen={isOpen}
+                    header="You have been registred Successfully"
+                    message="Go Now and login to your account."
+                    buttons={[{
+                        text: 'Login',
+                        handler: () => {
+                            setIsOpen(false);
+                            history.push("/login"); 
+                        }
+                    }]}
+                    onDidDismiss={() => setIsOpen(false)}
+                ></IonAlert>
         </form>
         </div>
     );

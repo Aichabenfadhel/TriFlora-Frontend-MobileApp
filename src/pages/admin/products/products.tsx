@@ -3,12 +3,13 @@ import axios from 'axios';
 import './products.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { IonButton, IonContent, IonHeader, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonSelect, IonSelectOption, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { PiPlantFill } from 'react-icons/pi';
 import { FaTrashCan } from "react-icons/fa6";
 import { CategoryInterfaceType } from '../../category/category';
-
+import { useHistory } from "react-router";
+import { FcFullTrash } from 'react-icons/fc';
 interface Product {
   _id?: string;
   title: string;
@@ -32,7 +33,7 @@ const AdminProducts: React.FC = () => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [updatingProduct, setUpdatingProduct] = useState<Product | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const history = useHistory();
  
 
   useEffect(() => {
@@ -43,6 +44,8 @@ const AdminProducts: React.FC = () => {
     try {
       const response = await axios.get('http://localhost:8000/api/v1/products');
       setProducts(response.data.data);
+      console.log(products);
+      
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -192,7 +195,7 @@ const AdminProducts: React.FC = () => {
       <IonToolbar>
         <IonButton
           slot="start"
-          href="/home"
+          onClick={()=>history.push("/home")}
           fill="clear"
           className="backArrow"
         >
@@ -335,21 +338,47 @@ const AdminProducts: React.FC = () => {
             </IonButton>
           </div>
         ) : (
+        //      <h3>List of Products</h3>
+        //   <div className="productsListContainer">
+        //   <ul className="listItems">
+        //     {products.map((product) => (
+        //       <li key={product._id} className="lisItem">
+        //         <span>{product.title}</span>
+        //         <div>
+        //             <FontAwesomeIcon icon={faTrash} className="icon" onClick={() => product._id && handleDeleteProduct(product._id)}/>
+        //             <FontAwesomeIcon icon={faPen} className="icon" onClick={() => product._id && handleUpdateProduct(product)}/>
+        //         </div>
+        //       </li>
+        //     ))}
+        //   </ul>
+        // </div>
+        <IonList>
           <h3>List of Products</h3>
+                {products.map((item, index) => (
+                  <IonItem key={index}>
+                     <IonThumbnail slot="start">
+                      <img
+                        alt={item.title || ""}
+                        src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${item._id}`}
+                      />
+                    </IonThumbnail>
+                    <IonLabel>{item.title}</IonLabel>
+                   
+                    <IonButton className="favListTrashBTN" fill="clear" 
+                    onClick={() => item._id && handleDeleteProduct(item._id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} className="icon" onClick={() => item._id && handleDeleteProduct(item._id)}/>
+                    </IonButton>
+                    <IonButton className="favListTrashBTN" fill="clear" 
+                    onClick={() => item._id && handleUpdateProduct(item)}
+                    >
+                      <FontAwesomeIcon icon={faPen} className="icon" onClick={() => item._id && handleUpdateProduct(item)}/>
+                    </IonButton>
+                  </IonItem>
+                ))}
+              </IonList>
         )}
-        <div className="list-wrapper">
-          <ul className="list">
-            {products.map((product) => (
-              <li key={product._id} className="list-item">
-                <span>{product.title}</span>
-                <div>
-                    <FontAwesomeIcon icon={faTrash} className="icon" onClick={() => product._id && handleDeleteProduct(product._id)}/>
-                    <FontAwesomeIcon icon={faPen} className="icon" onClick={() => product._id && handleUpdateProduct(product)}/>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+     
     </div>
     </IonContent>
       </IonPage>

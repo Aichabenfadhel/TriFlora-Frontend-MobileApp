@@ -11,6 +11,7 @@ import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-com
 import profilePic from '../../../assets/images/profilePic.png';
 import "./adminProfile.css";
 import Login from "../../login/login";
+import { Storage } from '@capacitor/storage';
 
 const AdminProfile: React.FC = () => {
   const auth: AuthContextType = useAuth();
@@ -44,15 +45,15 @@ const AdminProfile: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async() => {
     try {
       auth.setAuth({
         ...auth,
         user: null,
         token: "",
       });
-      localStorage.removeItem("auth");
-      localStorage.removeItem("cart");
+      await Storage.remove({ key: 'user' });
+      await Storage.remove({ key: 'token' });
       history.push('/');
     } catch (error) {
       console.error("Error while logging out:", error);
@@ -68,7 +69,7 @@ const AdminProfile: React.FC = () => {
     <IonPage>
     <IonHeader>
       <IonToolbar>
-        <IonButton slot="start" href="/home" fill="clear" className="backArrow">
+        <IonButton slot="start" onClick={()=>history.push("/home")} fill="clear" className="backArrow">
           <BsArrowLeft className="backArrow" />
         </IonButton>
         <IonTitle className="logo">

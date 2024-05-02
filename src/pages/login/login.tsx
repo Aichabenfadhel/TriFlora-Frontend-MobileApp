@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { IonButton, IonInput, IonItem, IonNote, IonTitle } from '@ionic/react';
+import { IonButton, IonInput, IonItem, IonNote,  IonTitle } from '@ionic/react';
 import './login.css';
 import { PiPlantFill } from 'react-icons/pi';
 import { Link, useLocation } from 'react-router-dom';
 import {  useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../provider/auth';
-import { CartItem, useCart } from '../../provider/cart';
-
+import { Storage } from '@capacitor/storage';
 
 
 const Login: React.FC = () =>{
@@ -42,8 +41,9 @@ const Login: React.FC = () =>{
         token : res.data.token,
        })
        
-        localStorage.setItem("auth", JSON.stringify(res.data.user));
-        localStorage.setItem("cart", JSON.stringify(res.data.cart));
+       await Storage.set({ key: 'user', value: JSON.stringify(res.data.user) });
+        await Storage.set({ key: 'token', value:res.data.token });
+       
         
         
         history.push('/home');
@@ -76,6 +76,7 @@ const Login: React.FC = () =>{
                  <IonInput type='password' placeholder='Enter your password' value={password} onIonChange={e =>{ setPassword(e.detail.value!);}}></IonInput>
                  <IonNote slot='error' >Password needs to be 6 characters</IonNote>
              </IonItem>
+             
              <Link className='formLink' to="/signin">Don&apos;t have an account? Sign In</Link><br/>
              <Link className='formLink' to="/resetPwd">Forgot Password?</Link>
              <IonButton  className='formButtom' type='submit' expand='block' > Log In</IonButton>

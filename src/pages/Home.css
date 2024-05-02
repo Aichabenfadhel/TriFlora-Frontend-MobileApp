@@ -104,6 +104,17 @@
     color: #536c23;
 }
 
+
+.toast-container {
+    width: 300px; /* Adjust the width as needed */
+    height: 100px; /* Adjust the height as needed */
+    padding: 10px; /* Add padding for spacing */
+    background-color: #333; /* Change the background color */
+    color: #fff; /* Change the text color */
+    border-radius: 8px; /* Add border radius for rounded corners */
+  }
+  
+
 @media (max-width: 500px) {
     .card {
       max-width: 100%; /* Card takes full width on smaller screens */

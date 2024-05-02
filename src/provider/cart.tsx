@@ -55,11 +55,11 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 useEffect(() => {
 
     updateTotalCartPrice();
-}, [cart]);
-useEffect(()=>{
-  const userId = auth?.user?._id
-  setUser(userId)
-},[auth?.user])
+}, []);
+// useEffect(()=>{
+//   const userId = auth?.user?._id
+//   setUser(userId)
+// },[auth?.user])
 
     const addToCart = async(product: string,price:number,title:string,imageCover:string) => {
         const existingItem = await cart.find(item => item.product === product);

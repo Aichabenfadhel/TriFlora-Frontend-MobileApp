@@ -3,6 +3,35 @@
     align-items: center;
     
   }
+  .container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+
+
+  .productsListContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 30%;
+    width: 70%;
+  }
+
+  .listItems{
+    display: flex;
+    align-items: center;
+    width: 90%;
+    height: 60%;
+  }
+
+  .lisItem{
+    display: flex;
+    align-items: center;
+    width: 90%;
+    height: 20%;
+  }
 
   .cancel-button {
     --background: #633345;
@@ -49,6 +78,8 @@
     background-color: #f3ecff;
   }
   
+
+
   .selected-file {
     display: flex;
     align-items: center;
