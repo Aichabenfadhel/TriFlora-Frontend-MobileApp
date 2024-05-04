@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import "./header.css";
-import { IonButton, IonContent, IonHeader, IonPopover, IonTitle } from "@ionic/react";
+import { IonButton, IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonPopover, IonTitle, IonToolbar } from "@ionic/react";
 
 import { PiPlantFill } from "react-icons/pi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faList, faRightFromBracket, faTableColumns, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faList, faPersonCircleQuestion, faRightFromBracket, faTableColumns, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { AuthContextType, useAuth } from "../../provider/auth";
 import { useHistory } from "react-router-dom";
 import { Storage } from '@capacitor/storage';
@@ -38,69 +38,158 @@ const Header: React.FC = () => {
     };
 
   return (
-    <IonHeader className="headerContainer1">
-      <IonTitle>
-        {" "}
-        <PiPlantFill className="logo" />
-        TriFlora
-      </IonTitle>
-      {auth?.token?(
-        <div className="Iconcontainer">
-      <FontAwesomeIcon onClick={openPopover} icon={faBars} style={{color: "#506726",}} />
-      
-      <IonPopover ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
-        <IonContent class="ion-padding">
-          
-            
-            
-            
-            {auth?.user?.role==="seller"?(
-              <div className="menuListContainer">
-                <div className="listItem">
-                <FontAwesomeIcon icon={faRightFromBracket}
-                                 size="xl" 
-                                 style={{color: "#506726"}} 
-                                 onClick={handleLogout} />
-                <h1>Logout</h1>
-              </div>
-                <div className="listItem">
-                <FontAwesomeIcon icon={faList}  
-                                 size="xl" 
-                                 style={{color: "#506726"}} 
-                                 onClick={()=>history.push("/dashboard")} />
-                <h1>Products</h1>
-              </div>
-                <div className="listItem">
-                <FontAwesomeIcon icon={faTableColumns} 
-                                 size="xl" 
-                                 style={{color: "#506726"}} 
-                                 onClick={()=>history.push("/category")} />
-                <h1>Categories</h1>
-              </div>
-              </div>
-            ):( 
-              <div className="menuListContainer">
-              <div className="listItem">
-              <FontAwesomeIcon icon={faRightFromBracket}
-                               size="xl" 
-                               style={{color: "#506726"}} 
-                               onClick={handleLogout} />
-              <h1>Logout</h1>
-            </div>
-            </div>
-            )}
-            
-          
-        </IonContent>
-      </IonPopover>
-      </div>
-      ):(
-        <div className="Iconcontainer">
-        <FontAwesomeIcon icon={faUser} style={{color: "#506726",}}  onClick={()=> {history.push('/login');window.location.reload();}} />
-        </div>
+
+    <>
+    <IonMenu contentId="main-content">
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Menu</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent >
+
+      <IonList>
+      {auth?.user?.role === 'admin' && (
+        <>
+          <IonItem button onClick={() => history.push('/sellerRequest')}>
+          <FontAwesomeIcon icon={faPersonCircleQuestion}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                         />
+            <IonLabel>Requests</IonLabel>
+          </IonItem>
+          <IonItem button onClick={() => history.push('/seller')}>
+          <FontAwesomeIcon icon={faUsers}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                          />
+            <IonLabel>Sellers</IonLabel>
+          </IonItem>
+        </>
       )}
-     
-    </IonHeader>
+
+      {auth?.user?.role === 'seller' && auth?.user?.sellerRequestStatus === 'approved' && (
+        <>
+          <IonItem button onClick={() => history.push('/dashboard')}>
+          <FontAwesomeIcon icon={faList}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                          />
+            <IonLabel>Products</IonLabel>
+          </IonItem>
+          <IonItem button onClick={() => history.push('/category')}>
+          <FontAwesomeIcon icon={faTableColumns}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                          />
+            <IonLabel>Categories</IonLabel>
+          </IonItem>
+        </>
+      )}
+
+      <IonItem button onClick={handleLogout}>
+      <FontAwesomeIcon icon={faRightFromBracket}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                         onClick={handleLogout} />
+        <IonLabel>Logout</IonLabel>
+      </IonItem>
+    </IonList>
+  
+
+
+
+
+{/* 
+      {auth?.user?.role === "admin" ? (
+                   <div className="menuListContainer">
+
+                     <div className="listItem">
+                       <FontAwesomeIcon icon={faPersonCircleQuestion}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                         onClick={() => { history.push("/sellerRequest"); setPopoverOpen(false); } } />
+                       <h1>Requests</h1>
+                     </div>
+                     <div className="listItem">
+                       
+                       <FontAwesomeIcon icon={faUsers}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                         onClick={() => { history.push("/seller"); setPopoverOpen(false); } } />
+                       <h1>Sellers</h1>
+                     </div>
+
+                   </div>
+                 ) : (
+                   <br />
+                 )}
+
+
+
+                 {auth?.user?.role === "seller" && auth?.user?.sellerRequestStatus === "approved" ? (
+                   <div className="menuListContainer">
+
+                     <div className="listItem">
+                       <FontAwesomeIcon icon={faList}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                         onClick={() => { history.push("/dashboard"); setPopoverOpen(false); } } />
+                       <h1>Products</h1>
+                     </div>
+                     <div className="listItem">
+                       <FontAwesomeIcon icon={faTableColumns}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                         onClick={() => { history.push("/category"); setPopoverOpen(false); } } />
+                       <h1>Categories</h1>
+                     </div>
+                     <div className="listItem">
+                       <FontAwesomeIcon icon={faRightFromBracket}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                         onClick={handleLogout} />
+                       <h1>Logout</h1>
+                     </div>
+                   </div>
+                 ) : (
+                   <div className="menuListContainer">
+                     <div className="listItem">
+                       <FontAwesomeIcon icon={faRightFromBracket}
+                         size="xl"
+                         style={{ color: "#506726" }}
+                         onClick={handleLogout} />
+                       <h1>Logout</h1>
+                     </div>
+                   </div>
+                 )} */}
+
+
+
+      </IonContent>
+    </IonMenu>
+    <IonHeader className="headerContainer1" id="main-content">
+       
+        {auth?.token ? (
+           <IonButtons slot="start">
+           <IonMenuButton>
+           </IonMenuButton>
+         </IonButtons>
+      
+        ) : (
+          <div className="Iconcontainer">
+            <FontAwesomeIcon icon={faUser} style={{ color: "#506726", }} onClick={() => { history.push('/login'); } } />
+          </div>
+        )}
+ <IonTitle>
+          {" "}
+          <div className="titleApp">
+            <PiPlantFill className="logo" />
+            TriFlora
+          </div>
+
+        </IonTitle>
+      </IonHeader></>
     
   );
 };

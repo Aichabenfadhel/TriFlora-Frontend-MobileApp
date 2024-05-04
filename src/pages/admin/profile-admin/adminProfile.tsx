@@ -13,6 +13,11 @@ import "./adminProfile.css";
 import Login from "../../login/login";
 import { Storage } from '@capacitor/storage';
 
+const sellerRequestStatusColors: { [key: string]: string } = {
+  pending: 'yellow',
+  approved: 'green',
+  rejected: 'red'
+};
 const AdminProfile: React.FC = () => {
   const auth: AuthContextType = useAuth();
   const history = useHistory();
@@ -67,104 +72,107 @@ const AdminProfile: React.FC = () => {
 
   return (
     <IonPage>
-    <IonHeader>
-      <IonToolbar>
-        <IonButton slot="start" onClick={()=>history.push("/home")} fill="clear" className="backArrow">
-          <BsArrowLeft className="backArrow" />
-        </IonButton>
-        <IonTitle className="logo">
-          <PiPlantFill />
-          TriFlora
-        </IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent>
-      {auth.token ? (
-        <div className="globalProfileCont">
-          <div className="profileContainer">
-            <div className="logOutItemDiv">
-              <FontAwesomeIcon
-                className="logOutItem"
-                icon={faRightFromBracket}
-                size="2xl"
-                style={{ color: "#633345" }}
-                onClick={handleLogout}
-              />
-            </div>
-            <div className="profileHeader">
-              <div className="profileImgCont">
-                <img src={profilePic} alt="profilePic" />
-              </div>
-              <h2>Welcome </h2>
-              <div className="settingsCont">
+      <IonHeader>
+        <IonToolbar>
+          <IonButton slot="start" onClick={()=>history.push("/home")} fill="clear" className="backArrow">
+            <BsArrowLeft className="backArrow" />
+          </IonButton>
+          <IonTitle className="logo">
+            <PiPlantFill />
+            TriFlora
+          </IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        {auth.token ? (
+          <div className="globalProfileCont">
+            <div className="profileContainer">
+              <div className="logOutItemDiv">
                 <FontAwesomeIcon
-                  icon={faGear}
-                  spinPulse
+                  className="logOutItem"
+                  icon={faRightFromBracket}
                   size="2xl"
                   style={{ color: "#633345" }}
+                  onClick={handleLogout}
                 />
               </div>
-            </div>
-            <div className="profileDetailsCont">
-              <h4>
-                <span>Admin Name :</span> {auth?.user?.name}{" "}
-              </h4>
-              <h4>
-                <span>Admin Email :</span> {auth?.user?.email}
-              </h4>
+              <div className="profileHeader">
+                <div className="profileImgCont">
+                  <img src={profilePic} alt="profilePic" />
+                </div>
+                <h2>Welcome </h2>
+                <div className="settingsCont">
+                  <FontAwesomeIcon
+                    icon={faGear}
+                    spinPulse
+                    size="2xl"
+                    style={{ color: "#633345" }}
+                  />
+                </div>
+              </div>
+              <div className="profileDetailsCont">
+                {auth?.user?.role === 'seller' && (
+                  <h4 style={{ color: sellerRequestStatusColors[auth?.user?.sellerRequestStatus ?? 'black'] }}>
+                  <span>Request Status :</span> {auth?.user?.sellerRequestStatus ?? 'N/A'}
+                </h4>
+                )}
+
+                <h4>
+                  <span>Admin Name :</span> {auth?.user?.name}
+                </h4>
+                <h4>
+                  <span>Admin Email :</span> {auth?.user?.email}
+                </h4>
+              </div>
+
+              <IonButton id="open-modal" fill="clear" className="EditProfileBTN">
+                Edit Profile
+              </IonButton>
+              <IonModal ref={modal} trigger="open-modal" >
+                <IonHeader>
+                  <IonToolbar>
+                    <IonButtons slot="start">
+                      <IonButton onClick={() => modal.current?.dismiss()}>
+                        Cancel
+                      </IonButton>
+                    </IonButtons>
+                    <IonTitle>Edit Profile</IonTitle>
+                  </IonToolbar>
+                </IonHeader>
+                <IonContent className="modalContainer">
+                  <div className="modalContainer">
+                    <IonItem className="modalItem">
+                      <IonInput
+                        label="Update your name"
+                        labelPlacement="stacked"
+                        ref={inputName}
+                        type="text"
+                        value={auth?.user?.name}
+                      />
+                    </IonItem>
+                    <IonItem className="modalItem">
+                      <IonInput
+                        label="Your email"
+                        labelPlacement="stacked"
+                        ref={inputEmail}
+                        type="text"
+                        disabled
+                        value={auth?.user?.email}
+                      />
+                    </IonItem>
+                    <IonButton className="EditProfileBTN" fill="clear" onClick={() => handleSubmit()}>
+                      Confirm
+                    </IonButton>
+                  </div>
+                </IonContent>
+              </IonModal>
             </div>
           </div>
-          <IonButton id="open-modal" fill="clear" className="EditProfileBTN">
-            Edit Profile
-          </IonButton>
-          <IonModal ref={modal} trigger="open-modal" >
-            <IonHeader>
-              <IonToolbar>
-                <IonButtons slot="start">
-                  <IonButton onClick={() => modal.current?.dismiss()}>
-                    Cancel
-                  </IonButton>
-                </IonButtons>
-                <IonTitle>Edit Profile</IonTitle>
-               
-              </IonToolbar>
-            </IonHeader>
-            <IonContent className="modalContainer">
-               <div className="modalContainer">
-              <IonItem className="modalItem">
-               
-                <IonInput
-                  label="Update your name"
-                  labelPlacement="stacked"
-                  ref={inputName}
-                  type="text"
-                  value={auth?.user?.name}
-                />
-               
-              </IonItem>
-              <IonItem className="modalItem">
-                 <IonInput
-                  label="Your email"
-                  labelPlacement="stacked"
-                  ref={inputEmail}
-                  type="text"
-                  disabled
-                  value={auth?.user?.email}
-                />
-              </IonItem>
-              <IonButton className="EditProfileBTN" fill="clear" onClick={() => handleSubmit()}>
-                Confirm
-              </IonButton>
-              </div>
-            </IonContent>
-          </IonModal>
-        </div>
-      ) : (
-        <Login />
-      )}
-    </IonContent>
-  </IonPage>
-  
+        ) : (
+          <Login />
+        )}
+      </IonContent>
+    </IonPage>
   );
 };
 

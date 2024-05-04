@@ -352,6 +352,7 @@ const AdminProducts: React.FC = () => {
         //     ))}
         //   </ul>
         // </div>
+        
         <IonList>
           <h3>List of Products</h3>
                 {products.map((item, index) => (
@@ -364,16 +365,12 @@ const AdminProducts: React.FC = () => {
                     </IonThumbnail>
                     <IonLabel>{item.title}</IonLabel>
                    
-                    <IonButton className="favListTrashBTN" fill="clear" 
-                    onClick={() => item._id && handleDeleteProduct(item._id)}
-                    >
+                   
                       <FontAwesomeIcon icon={faTrash} className="icon" onClick={() => item._id && handleDeleteProduct(item._id)}/>
-                    </IonButton>
-                    <IonButton className="favListTrashBTN" fill="clear" 
-                    onClick={() => item._id && handleUpdateProduct(item)}
-                    >
+                    
+                   
                       <FontAwesomeIcon icon={faPen} className="icon" onClick={() => item._id && handleUpdateProduct(item)}/>
-                    </IonButton>
+                    
                   </IonItem>
                 ))}
               </IonList>

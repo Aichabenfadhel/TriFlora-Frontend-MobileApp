@@ -3,4 +3,5 @@ export type userType={
     name:string,
     email:string,
     role?:string,
+    sellerRequestStatus?:string,
 }

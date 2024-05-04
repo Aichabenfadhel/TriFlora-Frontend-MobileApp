@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Redirect, Route , useLocation } from 'react-router-dom';
 import { IonApp, IonContent, IonPopover, IonRouterOutlet, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -47,6 +48,7 @@ import AdminSellers from './pages/admin/sellers/sellers';
 import CategoryAdmin from './pages/category/category';
 import AdminProfile from './pages/admin/profile-admin/adminProfile';
 import FavouritePage from './pages/wishList/favoritesPage';
+import SellerRequestManagement from './pages/admin/sellerRequest/sellerRequest';
 
 setupIonicReact();
 
@@ -72,6 +74,9 @@ const App: React.FC = () => (
         <Route path="/home" exact={true}>
           <Home />
           
+        </Route>
+        <Route path="/sellerRequest" exact={true}>
+          <SellerRequestManagement />
         </Route>
         <Route path="/profile" exact={true}>
           < AdminProfile/>

@@ -18,6 +18,8 @@ import { useCart } from "../provider/cart";
 
 import { AuthContextType, useAuth } from "../provider/auth";
 import { useFavorites } from "../provider/favorite";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartPlus, faHeart } from "@fortawesome/free-solid-svg-icons";
 
 
 const Home: React.FC = () => {
@@ -109,8 +111,19 @@ const Home: React.FC = () => {
       <h1>All Products</h1>
       <div className="cont">
         {products?.map((p) => (
-          <IonCard className="card" key={p._id}>
+          <IonCard className="card" key={p._id}  onClick={()=>{history.push(`/product-details/${p._id}`
+        ) 
+        }} >
             <div className="enteteContainer">
+            
+            <IonAlert
+                    trigger="FavAlert"
+                    isOpen={isOpenFav}
+                    header="Product Added Successfully"
+                    message="Check your wish-list and add more."
+                    buttons={['Ok']}
+                    onDidDismiss={() => setIsOpenFav(false)}
+                ></IonAlert>
               <div className="imgContainer">
                 <img className="card-img-top" alt={p.title} 
                 src={`${process.env.REACT_APP_API}/api/v1/products/product-photo/${p._id}`} 
@@ -126,29 +139,19 @@ const Home: React.FC = () => {
                 Price : {p.price}
               </IonCardSubtitle>
             </IonCardHeader>
-            <IonCardContent>{p.description.substring(0,30)}...
+            <div className="cardFooter">
               
-              <IonButton  size="small" fill="clear" className="detailsBTN" 
+              {/* <IonButton  size="small" fill="clear" className="detailsBTN" 
                onClick={()=>{history.push(`/product-details/${p._id}`
                ) 
                }}>
                 More DeTails
-                </IonButton>
+                </IonButton> */}
+                <div className="iconsContainer">
+                <FontAwesomeIcon className="iconCard" icon={faCartPlus} size="xl" onClick={() => addItemToCart(p,p._id,p.quantity,p.price,p.title,p.imageCover)}/>
+                <FontAwesomeIcon id="FavAlert" className="iconCard" size="xl" icon={faHeart} onClick={()=>addItemToFavoritesList(p)} />
+              </div>
               
-            </IonCardContent>
-            <div className="btnContainer">
-              <IonButton id="FavAlert" fill="clear" className="favBTN" onClick={()=>addItemToFavoritesList(p)}>
-                Add To Favorites
-              </IonButton>
-              <IonAlert
-                    trigger="FavAlert"
-                    isOpen={isOpenFav}
-                    header="Product Added Successfully"
-                    message="Check your wish-list and add more."
-                    buttons={['Ok']}
-                    onDidDismiss={() => setIsOpenFav(false)}
-                ></IonAlert>
-              <IonButton id="present-alert" className="cardBTN" onClick={() => addItemToCart(p,p._id,p.quantity,p.price,p.title,p.imageCover)}>Add To Cart</IonButton>
                <IonAlert
                     trigger="present-alert"
                     isOpen={isOpen}
@@ -156,8 +159,9 @@ const Home: React.FC = () => {
                     message="Check your shopping list and add more."
                     buttons={['Ok']}
                     onDidDismiss={() => setIsOpen(false)}
-                ></IonAlert>
-            </div>
+                    ></IonAlert>
+            
+                    </div>
             </div>
           </IonCard>
           
