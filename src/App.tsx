@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useState } from 'react';
 import { Redirect, Route , useLocation } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -7,6 +7,10 @@ import Acceuil from './pages/acceuil/accueil';
 import Login from './pages/login/login';
 import Signin from './pages/login/signin';
 import ResetPwd from './pages/login/resetPwd';
+
+
+const defaultValue = {};
+export const RecoveryContext = createContext<any>(defaultValue);
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -33,19 +37,34 @@ import { BsBasket2Fill, BsPersonFill } from "react-icons/bs";
 import { AiFillHome } from "react-icons/ai";
 import { MdFavorite } from "react-icons/md";
 import "../src/components/footer/footer.css"
+import ForgotPwd from './pages/login/forgotPwd';
+import Otp from './pages/login/otp';
 
 
 setupIonicReact();
 
 const App: React.FC = () => {
+  const [page,setPage] = useState("login");
+  const [email,setEmail] = useState();
+  const [otp,setOtp] = useState();
 
   return(
     <IonApp>
+    <RecoveryContext.Provider value={{page, setPage, otp,setOtp,email,setEmail}}>
+
+    </RecoveryContext.Provider>
+    
        <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <Route exact path="/login">
                  <Login />
+              </Route>
+              <Route exact path="/forgotPwd">
+                 <ForgotPwd />
+              </Route>
+              <Route exact path="/otp">
+                 <Otp />
               </Route>
               <Route exact path="/signin">
                  <Signin />

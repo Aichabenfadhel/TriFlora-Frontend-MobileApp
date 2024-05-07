@@ -57,11 +57,6 @@ const Signin: React.FC =() =>{
                  <IonNote slot='error' >Password needs to be 6 characters</IonNote>
              </IonItem>
 
-             <IonTitle className='label'>Confirm Password  :</IonTitle>
-             <IonItem fill='solid' className='formItem'>
-                 <IonInput type='password' placeholder='Confirm your password' value={password} onIonChange={e => setPwd(e.detail.value!)}></IonInput>
-                 <IonNote slot='error' >Password needs to be 6 characters</IonNote>
-             </IonItem>
              <Link className='formLink' to="/login">login</Link><br/>
              <IonButton  className='formButtom' type='submit' expand='block' >SignUp</IonButton>
         </form>

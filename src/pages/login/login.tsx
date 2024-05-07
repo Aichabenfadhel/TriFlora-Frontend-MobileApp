@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { IonButton, IonInput, IonItem, IonNote, IonTitle } from '@ionic/react';
 import './login.css';
 import { PiPlantFill } from 'react-icons/pi';
@@ -9,13 +9,16 @@ import { useAuth } from '../../provider/auth';
 
 
 
+
 const Login: React.FC = () =>{
+    
     const [email,setEmail]= useState("");
     const [password,setPassword]= useState("");
     const auth= useAuth();
 
     const history = useHistory();
     const location = useLocation();
+    
 
     const handleLogin =async (event: React.FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
@@ -55,7 +58,7 @@ const Login: React.FC = () =>{
             <IonTitle className='titleCont'> <PiPlantFill className='logo' />TriFlora</IonTitle>
         </div>            
         <IonTitle className='loginName'>Login</IonTitle>
-                
+                 
         <form onSubmit={handleLogin} >
              <IonTitle className='label'>Email  :</IonTitle>
              <IonItem fill='solid' className='formItem'>
@@ -69,7 +72,7 @@ const Login: React.FC = () =>{
                  <IonNote slot='error' >Password needs to be 6 characters</IonNote>
              </IonItem>
              <Link className='formLink' to="/signin">Don&apos;t have an account? Sign In</Link><br/>
-             <Link className='formLink' to="/resetPwd">Forgot Password?</Link>
+             <Link className='formLink' to="/forgotPwd">Forgot Password?</Link>
              <IonButton  className='formButtom' type='submit' expand='block' > Log In</IonButton>
         </form>
         </div>

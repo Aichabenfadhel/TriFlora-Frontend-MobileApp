@@ -7,17 +7,22 @@
     position: fixed;
 
 }
+.p{
+    align-items: center;
+    display: flex;
+}
 
 .titleCont{
 
    color: #536c23;
    display: flex;
    transform: translateX(-40%);
+
    font-family :'Times New Roman', Times, serif;
 }
 .loginName{
     color: #9c36a0;
-    transform: translateX(40%);
+    transform: translateX(30%);
     margin-top: 5%;
     font-size: 250%;
     font-family :'Times New Roman', Times, serif;
@@ -41,7 +46,7 @@
     margin-top: 1%;
     margin-left: 30%;
     margin-right:50% ;
-    transform: translateY(50%);
+    transform: translateY(200%);
     --background: #9c36a0;
     --border-radius: 20px;
 }
