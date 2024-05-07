@@ -95,6 +95,8 @@ const App: React.FC = () => (
         <Route  path="/category" exact={true}>
           <CategoryAdmin />
         </Route>
+        <Route path="/home/:categoryId?" exact={true} component={Home} />
+
         <Route  path="/seller" exact={true}>
           <AdminSellers/>
         </Route>

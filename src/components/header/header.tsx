@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./header.css";
-import { IonButton, IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonPopover, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonPopover, IonSelect, IonSelectOption, IonTitle, IonToolbar } from "@ionic/react";
 
 import { PiPlantFill } from "react-icons/pi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,13 +8,37 @@ import { faBars, faList, faPersonCircleQuestion, faRightFromBracket, faTableColu
 import { AuthContextType, useAuth } from "../../provider/auth";
 import { useHistory } from "react-router-dom";
 import { Storage } from '@capacitor/storage';
+import { CategoryInterfaceType } from "../../pages/category/category";
+import axios from "axios";
 const Header: React.FC = () => {
 
   const auth: AuthContextType = useAuth();
     const popover = useRef<HTMLIonPopoverElement>(null);
     const [popoverOpen, setPopoverOpen] = useState(false);
     const history = useHistory();
+    const [categories, setCategories] = useState<CategoryInterfaceType[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
 
+    const fetchCatrgories = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/v1/categories/`);
+        setCategories(response.data.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchCatrgories();
+    }, []);
+
+    const handleCategoryChange = async (categoryId: string | undefined) => {
+      console.log("parametre",categoryId);
+      
+      const categoryParam = categoryId ? `/${categoryId}` : ''; // Include category ID in URL if it exists
+      history.push(`/home${categoryParam}`);
+      
+    };
   
     const openPopover = (e: any) => {
       popover.current!.event = e;
@@ -36,6 +60,8 @@ const Header: React.FC = () => {
         console.error("Error while logging out:", error);
       }
     };
+
+  
 
   return (
 
@@ -86,6 +112,19 @@ const Header: React.FC = () => {
           </IonItem>
         </>
       )}
+       <IonSelect
+      value={selectedCategory}
+      placeholder="Select a category"
+      onIonChange={(e) => handleCategoryChange(e.detail.value)}
+    >
+      {categories.map((category) => (
+        <IonSelectOption key={category._id} value={category._id}>
+          {category.name}
+        </IonSelectOption>
+      ))}
+    </IonSelect>
+
+
 
       <IonItem button onClick={handleLogout}>
       <FontAwesomeIcon icon={faRightFromBracket}

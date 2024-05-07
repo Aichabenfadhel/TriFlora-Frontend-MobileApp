@@ -13,17 +13,18 @@ import Header from "../components/header/header";
 import { productsType } from "../Modals/products";
 
 import "./Home.css";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { useCart } from "../provider/cart";
 
 import { AuthContextType, useAuth } from "../provider/auth";
 import { useFavorites } from "../provider/favorite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { CategoryInterfaceType } from "./category/category";
 
 
 const Home: React.FC = () => {
-
+  const { categoryId } = useParams<{ categoryId: string }>();
   const history = useHistory();
   const { cart,addToCart,getCartData } = useCart();
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +33,7 @@ const Home: React.FC = () => {
   const [products, setProducts] = useState<productsType[]>([]);
   const auth: AuthContextType = useAuth();
   const {addToFavorites}=useFavorites();
-
+  // const [filterOn,setFilterOn] = useState(false);
 
 
   const getAllProducts = async () => {
@@ -51,6 +52,25 @@ const Home: React.FC = () => {
     }
   };
 
+
+    const fetchProductsByCategory = async () => {
+      try {
+        console.log("categ id",categoryId);
+        // setFilterOn(true)
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/v1/products/productByCategory/${categoryId}`);
+        setProducts(response.data.data);
+        console.log("filtred products ",response.data.data);
+        
+      } catch (error) {
+        console.error('Error fetching products by category:', error);
+      }
+    };
+
+    if (categoryId) {
+      fetchProductsByCategory();
+    }
+
+  
 
   const addItemToFavoritesList = async(product:productsType)=>{
     try {
@@ -108,7 +128,7 @@ const Home: React.FC = () => {
       <Header></Header>
       <IonContent >
       
-      <h1>All Products</h1>
+      {/* {filterOn?(<IonButton onClick={clearFilter}>Clear Filter</IonButton>):(<br/>)} */}
       <div className="cont">
         {products?.map((p) => (
           <IonCard className="card" key={p._id}  onClick={()=>{history.push(`/product-details/${p._id}`
