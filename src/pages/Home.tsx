@@ -31,8 +31,10 @@ const Home: React.FC = () => {
   const [isOpenFav, setIsOpenFav] = useState(false);
   const [loading,setLoading]=useState(false)
   const [products, setProducts] = useState<productsType[]>([]);
+  const [searchResults, setSearchResults] = useState<productsType[]>([]);
   const auth: AuthContextType = useAuth();
   const {addToFavorites}=useFavorites();
+  const [keyword, setKeyword] = useState(''); 
   // const [filterOn,setFilterOn] = useState(false);
 
 
@@ -109,7 +111,27 @@ const Home: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
+  
   };
+
+  const handleSearch = async () => {
+    
+
+    try {
+      console.log(`${process.env.REACT_APP_API}/api/products/search?keyword=${keyword}`);
+      
+      const response = await axios.get(`${process.env.REACT_APP_API}/api/products/search?keyword=${keyword}`);
+
+     
+      setSearchResults(response.data.data);
+      console.log("search",searchResults);
+      
+    } catch (error) {
+      console.error('Error searching products:', error);
+    }
+  };
+
+  
 
 
   useEffect(() => {
@@ -127,13 +149,14 @@ const Home: React.FC = () => {
     <IonPage>
       <Header></Header>
       <IonContent >
-      
+      {/* <form onSubmit={handleSearch}>
+        <input type="text" value={keyword} onChange={(e)=>setKeyword(e.target.value)} />
+        <button type="submit">Search</button>
+      </form> */}
       {/* {filterOn?(<IonButton onClick={clearFilter}>Clear Filter</IonButton>):(<br/>)} */}
       <div className="cont">
         {products?.map((p) => (
-          <IonCard className="card" key={p._id}  onClick={()=>{history.push(`/product-details/${p._id}`
-        ) 
-        }} >
+          <IonCard className="card" key={p._id}   >
             <div className="enteteContainer">
             
             <IonAlert
@@ -180,6 +203,13 @@ const Home: React.FC = () => {
                     buttons={['Ok']}
                     onDidDismiss={() => setIsOpen(false)}
                     ></IonAlert>
+
+<button onClick={()=>{history.push(`/product-details/${p._id}`
+        ) }}>
+    <span className="box">
+        Learn More
+    </span>
+</button>
             
                     </div>
             </div>

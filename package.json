@@ -5,6 +5,7 @@
   "dependencies": {
     "@capacitor/android": "5.7.3",
     "@capacitor/app": "5.0.7",
+    "@capacitor/camera": "^6.0.0",
     "@capacitor/core": "5.7.3",
     "@capacitor/haptics": "5.0.7",
     "@capacitor/ios": "5.7.3",
@@ -15,6 +16,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@ionic/pwa-elements": "^3.2.2",
     "@ionic/react": "^7.0.0",
     "@ionic/react-router": "^7.0.0",
     "@testing-library/jest-dom": "^5.11.9",

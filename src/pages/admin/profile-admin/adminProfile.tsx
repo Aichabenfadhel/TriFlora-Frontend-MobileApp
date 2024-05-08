@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { PiPlantFill } from "react-icons/pi";
 import { BsArrowLeft } from "react-icons/bs";
 import { IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonModal, IonPage, IonTitle, IonToolbar } from "@ionic/react";
@@ -12,6 +12,8 @@ import profilePic from '../../../assets/images/profilePic.png';
 import "./adminProfile.css";
 import Login from "../../login/login";
 import { Storage } from '@capacitor/storage';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { FaTrashCan } from "react-icons/fa6";
 
 const sellerRequestStatusColors: { [key: string]: string } = {
   pending: 'yellow',
@@ -21,21 +23,34 @@ const sellerRequestStatusColors: { [key: string]: string } = {
 const AdminProfile: React.FC = () => {
   const auth: AuthContextType = useAuth();
   const history = useHistory();
-
+  const [photo, setPhoto] = useState<File|null>(null);
+  const [photoCam, setPhotoCam] = useState<Photo|null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const modal = useRef<HTMLIonModalElement>(null);
-  const inputName = useRef<HTMLIonInputElement>(null);
-  const inputEmail = useRef<HTMLIonInputElement>(null);
 
   const handleSubmit = async () => {
     try {
+      const formData = new FormData();
+      formData.append('name', auth?.user?.name || '');
+      formData.append('email', auth?.user?.email || '');
+      
+      
+      if (photo instanceof File) {
+        formData.append('photo', photo);
+      }
+      
+      else if (photoCam && photoCam.path) {
+        formData.append('photo', photoCam.path);
+      }
+  
       const { data } = await axios.put(
         `${process.env.REACT_APP_API}/api/v1/users/${auth?.user?._id}`,
-        { name: inputName.current?.value, email: inputEmail.current?.value }
+        formData
       );
       if (data?.error) {
         console.log(data?.error);
       } else {
-        auth.setAuth({ ...auth, user: data?.data});
+        auth.setAuth({ ...auth, user: data?.data });
         const lsString = localStorage.getItem("auth");
         if (lsString) {
           const ls = JSON.parse(lsString);
@@ -49,8 +64,46 @@ const AdminProfile: React.FC = () => {
       console.log(error);
     }
   };
+  
+console.log("photo cam path ",photoCam?.path);
 
-  const handleLogout = async() => {
+  const takePhoto = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera 
+      });
+
+      setPhotoCam(image);
+    } catch (error) {
+      console.error("Error taking photo:", error);
+    }
+  };
+ 
+  
+  const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setPhoto(e.target.files[0]);
+    }
+  };
+
+  const onChooseFile = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
+
+  const removeFile = () => {
+    setPhoto(null);
+    setPhotoCam(null); 
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
+
+  const handleLogout = async () => {
     try {
       auth.setAuth({
         ...auth,
@@ -65,16 +118,11 @@ const AdminProfile: React.FC = () => {
     }
   };
 
-  useEffect(()=>{
-    const email = auth?.user?.email
-    const name= auth?.user?.name
-  },[auth?.user])
-
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButton slot="start" onClick={()=>history.push("/home")} fill="clear" className="backArrow">
+          <IonButton slot="start" onClick={() => history.push("/home")} fill="clear" className="backArrow">
             <BsArrowLeft className="backArrow" />
           </IonButton>
           <IonTitle className="logo">
@@ -98,7 +146,7 @@ const AdminProfile: React.FC = () => {
               </div>
               <div className="profileHeader">
                 <div className="profileImgCont">
-                  <img src={profilePic} alt="profilePic" />
+                  <img src={`${process.env.REACT_APP_API}/api/v1/users/user-photo/${auth?.user?._id}`||profilePic} alt="profilePic" />
                 </div>
                 <h2>Welcome </h2>
                 <div className="settingsCont">
@@ -113,8 +161,8 @@ const AdminProfile: React.FC = () => {
               <div className="profileDetailsCont">
                 {auth?.user?.role === 'seller' && (
                   <h4 style={{ color: sellerRequestStatusColors[auth?.user?.sellerRequestStatus ?? 'black'] }}>
-                  <span>Request Status :</span> {auth?.user?.sellerRequestStatus ?? 'N/A'}
-                </h4>
+                    <span>Request Status :</span> {auth?.user?.sellerRequestStatus ?? 'N/A'}
+                  </h4>
                 )}
 
                 <h4>
@@ -128,7 +176,7 @@ const AdminProfile: React.FC = () => {
               <IonButton id="open-modal" fill="clear" className="EditProfileBTN">
                 Edit Profile
               </IonButton>
-              <IonModal ref={modal} trigger="open-modal" >
+              <IonModal ref={modal} trigger="open-modal">
                 <IonHeader>
                   <IonToolbar>
                     <IonButtons slot="start">
@@ -145,7 +193,6 @@ const AdminProfile: React.FC = () => {
                       <IonInput
                         label="Update your name"
                         labelPlacement="stacked"
-                        ref={inputName}
                         type="text"
                         value={auth?.user?.name}
                       />
@@ -154,13 +201,59 @@ const AdminProfile: React.FC = () => {
                       <IonInput
                         label="Your email"
                         labelPlacement="stacked"
-                        ref={inputEmail}
                         type="text"
                         disabled
                         value={auth?.user?.email}
                       />
                     </IonItem>
-                    <IonButton className="EditProfileBTN" fill="clear" onClick={() => handleSubmit()}>
+
+                    <div className="mb-3">
+                      <label className="btn btn-outline-secondary col-md-12">
+                        <input
+                          type="file"
+                          ref={inputRef}
+                          className='importPhotoInput'
+                          name="photo"
+                          accept="image/*"
+                          onChange={handlePhotoChange}
+                          style={{ display: "none" }}
+                          hidden
+                        />
+                      </label>
+                    </div>
+                    <button className="file-btn" onClick={onChooseFile} style={{ display: photo ? 'none' : 'flex' }}>
+                      <span className="material-symbols-rounded">Upload</span> Upload Picture
+                    </button>
+                    <IonButton className="detailsBTN" onClick={takePhoto}>Take Photo</IonButton>
+                    <div className="mb-3">
+ 
+  {(photo || photoCam) && (
+    <div className="text-center">
+     
+      <img
+        src={photo ? URL.createObjectURL(photo) : photoCam?.path}
+        alt="product_photo"
+        height={"200px"}
+        className="img img-responsive"
+      />
+      <div className="selected-file">
+        
+        <p>{photo?.name || "Photo"}</p>
+        
+        {photo && (
+          <button onClick={removeFile}>
+            <span className="material-symbols-rounded">
+              <FaTrashCan />
+            </span>
+          </button>
+        )}
+      </div> 
+    </div>
+  )}
+</div>
+
+
+                    <IonButton className="EditProfileBTN" fill="clear" onClick={handleSubmit}>
                       Confirm
                     </IonButton>
                   </div>
@@ -177,3 +270,4 @@ const AdminProfile: React.FC = () => {
 };
 
 export default AdminProfile;
+

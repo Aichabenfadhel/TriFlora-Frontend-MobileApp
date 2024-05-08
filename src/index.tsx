@@ -7,9 +7,10 @@ import { BrowserRouter } from 'react-router-dom';
 import CartProvider from './provider/cart';
 import { AuthProvider } from './provider/auth';
 import { FavoritesProvider } from './provider/favorite';
-
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 const container = document.getElementById('root');
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+defineCustomElements(window);
 const root = createRoot(container!);
 root.render(
   <AuthProvider>

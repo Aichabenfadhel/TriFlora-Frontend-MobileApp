@@ -4,4 +4,5 @@ export type userType={
     email:string,
     role?:string,
     sellerRequestStatus?:string,
+    photo?:File;
 }
