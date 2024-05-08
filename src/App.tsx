@@ -49,6 +49,8 @@ import CategoryAdmin from './pages/category/category';
 import AdminProfile from './pages/admin/profile-admin/adminProfile';
 import FavouritePage from './pages/wishList/favoritesPage';
 import SellerRequestManagement from './pages/admin/sellerRequest/sellerRequest';
+import ForgotPwd from './pages/login/forgotPwd';
+import Otp from './pages/login/otp';
 
 setupIonicReact();
 
@@ -91,6 +93,12 @@ const App: React.FC = () => (
         <Route component={FavouritePage} path="/favorites" exact={true}>
          
         </Route>
+        <Route exact path="/forgotPwd">
+                 <ForgotPwd />
+              </Route>
+              <Route exact path="/otp">
+                 <Otp />
+              </Route>
        
         <Route  path="/category" exact={true}>
           <CategoryAdmin />
@@ -103,7 +111,9 @@ const App: React.FC = () => (
         <Route  path="/dashboard" exact={true}>
           <AdminProducts/>
         </Route>
-        
+        <Route exact path="/resetPwd">
+                 <ResetPwd />
+              </Route>
         <Route  path="/" exact={true}>
           <Redirect to="/acceuil" />
         </Route>

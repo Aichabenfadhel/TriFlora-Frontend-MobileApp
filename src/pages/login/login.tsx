@@ -78,7 +78,7 @@ const Login: React.FC = () =>{
              </IonItem>
              
              <Link className='formLink' to="/signin">Don&apos;t have an account? Sign In</Link><br/>
-             <Link className='formLink' to="/resetPwd">Forgot Password?</Link>
+             <Link className='formLink' to="/forgotPwd">Forgot Password?</Link>
              <IonButton  className='formButtom' type='submit' expand='block' > Log In</IonButton>
         </form>
         </div>
